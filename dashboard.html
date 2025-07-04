@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css" />
+    <script src="app.js" defer></script>
+</head>
+<body>
+    <div class="full-container full-container-dashboard">
+        <div class="setup-container">
+            <h1 class="h1-dashboard">Game set up</h1>
+            <div class="progress-tab">
+                <button class="tablinks-btn tablinks-btn-active" data-title= "Playlist"></button>
+                <button class="tablinks-btn complete" data-title= "Difficulty"></button>
+                <button class="tablinks-btn" data-title= "Player count"></button>
+                <button class="tablinks-btn" data-title= "Length"></button>
+            </div>
+            
+            <div class="setup-step setup-step-active" id="select-playlist-step">
+                <div class="multi-choice-select-container">
+                    <div class="multi-choice-heading">
+                        <h3 class="h3-dashboard" style="padding-bottom: 10px;">Playlists:</h3>
+                        <div class="next-button next-button-setup">➜</div>
+                    </div>
+                    <div class="multi-choice-heading">
+                        <input type="text" placeholder="search playlists">
+                        
+                        <button class="sort-btn"><i class="fas fa-sort"></i></button>
+                    </div>
+                            
+                        
+                    <div class="rows-search-container rows-search-container-playlist">
+                        <div class="row-search row-playlist">
+                            <div class="row-index row-index-playlist"></div>
+                            <div class="img-container img-container-table">
+                                <img src="https://image-cdn-fa.spotifycdn.com/image/ab67706c0000da847a5356195a7c08a946997f55" alt="playlist-photo">
+                            </div>
+                            <div class="text-column text-column-playlist">Skitz Shit</div>
+                            <div class="text-column text-column-playlist">501 tracks</div>
+                        </div>
+                        <div class="row-search row-playlist row-search-selected">
+                            <div class="row-index row-index-playlist row-index-selected"></div>
+                            <div class="img-container img-container-table">
+                                <img src="https://image-cdn-ak.spotifycdn.com/image/ab67706c0000da8498eeb8c6d896182a8a383769" alt="playlist-photo">
+                            </div>
+                            <div class="text-column text-column-playlist">B Tier</div>
+                            <div class="text-column text-column-playlist">492 tracks</div>
+                        </div>
+                        <div class="row-search row-playlist row-search-selected">
+                            <div class="row-index row-index-playlist row-index-selected"></div>
+                            <div class="img-container img-container-table">
+                                <img src="https://image-cdn-fa.spotifycdn.com/image/ab67706c0000da84c71c7b7748d87012a7efb9dd" alt="playlist-photo">
+                            </div>
+                            <div class="text-column text-column-playlist">bangerz</div>
+                            <div class="text-column text-column-playlist">172 tracks</div>
+                        </div>
+                        <div class="row-search row-playlist">
+                            <div class="row-index row-index-playlist"></div>
+                            <div class="img-container img-container-table">
+                                <img src="https://image-cdn-fa.spotifycdn.com/image/ab67706c0000da8451eae8d8c4e3127f0ece314d" alt="playlist-photo">
+                            </div>
+                            <div class="text-column text-column-playlist">shit aint right</div>
+                            <div class="text-column text-column-playlist">82 tracks</div>
+                        </div>
+                        <div class="row-search row-playlist">
+                            <div class="row-index row-index-playlist"></div>
+                            <div class="img-container img-container-table">
+                                <img src="https://mosaic.scdn.co/60/ab67616d00001e02072e9faef2ef7b6db63834a3ab67616d00001e022f44aec83b20e40f3baef73cab67616d00001e02600adbc750285ea1a8da249fab67616d00001e02e42b5fea4ac4c3d6328b622b" alt="playlist-photo">
+                            </div>
+                            <div class="text-column text-column-playlist">trash</div>
+                            <div class="text-column text-column-playlist">91 tracks</div>
+                        </div>
+                        <div class="row-search row-playlist">
+                            <div class="row-index row-index-playlist"></div>
+                            <div class="img-container img-container-table">
+                                <img src="https://mosaic.scdn.co/60/ab67616d00001e0244f804700550dd335e9aec78ab67616d00001e027586047ed2cb60ea3188b5bdab67616d00001e02dfe4bfe695c4192e547e72c7ab67616d00001e02f30e1411889fd752e21cc515" alt="playlist-photo">
+                            </div>
+                            <div class="text-column text-column-playlist">ya nan</div>
+                            <div class="text-column text-column-playlist">61 tracks</div>
+                        </div>
+                        <div class="row-search row-playlist">
+                            <div class="row-index row-index-playlist"></div>
+                            <div class="img-container img-container-table">
+                                <img src="https://mosaic.scdn.co/60/ab67616d00001e026994bc99995860421956ea83ab67616d00001e02b1472111dcfb4c0eb5bf5bdeab67616d00001e02cb4d117414b45fffca56ccb4ab67616d00001e02d84b5673b7a8b8247d4bde4e" alt="playlist-photo">
+                            </div>
+                            <div class="text-column text-column-playlist">The play.    list</div>
+                            <div class="text-column text-column-playlist">10 tracks</div>
+                        </div>
+                        <div class="row-search row-playlist">
+                            <div class="row-index row-index-playlist"></div>
+                            <div class="img-container img-container-table">
+                                <img src="https://mosaic.scdn.co/60/ab67616d00001e0205a19220d37bc871db939b64ab67616d00001e020b51f8d91f3a21e8426361aeab67616d00001e0285c160f9951c570a8e81f998ab67616d00001e02e87fc9dee06ae964efd36bea" alt="playlist-photo">
+                            </div>
+                            <div class="text-column text-column-playlist">Runnin' for a g</div>
+                            <div class="text-column text-column-playlist">22 tracks</div>
+                        </div>
+                        <div class="row-search row-playlist">
+                            <div class="row-index row-index-playlist"></div>
+                            <div class="img-container img-container-table">
+                                <img src="https://image-cdn-ak.spotifycdn.com/image/ab67706c0000da8498eeb8c6d896182a8a383769" alt="playlist-photo">
+                            </div>
+                            <div class="text-column text-column-playlist">B Tier</div>
+                            <div class="text-column text-column-playlist">492 tracks</div>
+                        </div>
+                        <div class="row-search row-playlist">
+                            <div class="row-index row-index-playlist"></div>
+                            <div class="img-container img-container-table">
+                                <img src="https://image-cdn-ak.spotifycdn.com/image/ab67706c0000da8498eeb8c6d896182a8a383769" alt="playlist-photo">
+                            </div>
+                            <div class="text-column text-column-playlist">B Tier</div>
+                            <div class="text-column text-column-playlist">492 tracks</div>
+                        </div>
+                        <div class="row-search row-playlist">
+                            <div class="row-index row-index-playlist"></div>
+                            <div class="img-container img-container-table">
+                                <img src="https://image-cdn-ak.spotifycdn.com/image/ab67706c0000da8498eeb8c6d896182a8a383769" alt="playlist-photo">
+                            </div>
+                            <div class="text-column text-column-playlist">B Tier</div>
+                            <div class="text-column text-column-playlist">492 tracks</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="setup-step" id="select-difficulty-step">
+                <div class="multi-choice-select-container">
+                    <div class="multi-choice-heading">
+                        <h3 class="h3-dashboard">Difficulty select:</h3>
+                        <div class="next-button next-button-setup">➜</div>
+                    </div>
+                    <div class="multi-choice-options-container">
+                        <div class="multi-choice-option btn">
+                            <h4 class="h3-dashboard">Easy</h4>
+                        </div>
+                        <div class="multi-choice-option btn row-search-selected">
+                            <h4 class="h3-dashboard">medium</h4>
+                        </div>
+                        <div class="multi-choice-option btn">
+                            <h4 class="h3-dashboard">Hard</h4>
+                        </div>    
+                    </div>
+                </div>
+            </div>
+            <div class="setup-step" id="select-player-count-step">
+                <div class="multi-choice-select-container">
+                    <div class="multi-choice-heading">
+                        <h3 class="h3-dashboard">player select</h3>
+                        <div class="next-button next-button-setup">➜</div>
+                    </div>
+                    <div class="multi-choice-options-container">
+                        <div class="multi-choice-option btn">
+                            <h4 class="h3-dashboard">1 player</h4>
+                        </div>
+                        <div class="multi-choice-option btn">
+                            <h4 class="h3-dashboard">2 player</h4>
+                        </div>    
+                    </div>
+                </div>
+            </div>
+            <div class="setup-step" id="select-length-step">
+                <div class="multi-choice-select-container">
+                    <div class="multi-choice-heading">
+                        <h3 class="h3-dashboard">Question number</h3>
+                        <div class="next-button next-button-setup">➜</div>
+                    </div>
+                    <div class="multi-choice-options-container">
+                        <div class="multi-choice-option btn">
+                            <h4 class="h3-dashboard">5 questions</h4>
+                        </div>
+                        <div class="multi-choice-option btn">
+                            <h4 class="h3-dashboard">10 questions</h4>
+                        </div>
+                        <div class="multi-choice-option btn">
+                            <h4 class="h3-dashboard">20 questions</h4>
+                        </div>   
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

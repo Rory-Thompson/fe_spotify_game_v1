@@ -1,0 +1,36 @@
+writing html in vs code
+
+if u do ! tab in html file it will auto complete boiler -plate code for the head and create the body.
+create a div do .class#id and replace class with what you want it called (same with id) and it will auto comp0lete in vs coode. 
+shift-alt-down arrow to copy a line 
+
+if you want to create a link you would to ul.class_name and replace class name with what you would like it to be called. 
+
+ul is unordered list
+
+ol is ordered list.
+
+li is list item
+
+an html id is referenced as # in CSS
+
+the <i tag means italic but is used sometimes as a placeholder for icons. 
+
+the <a tag stands for anchor and is often used as a link pretty much
+
+
+justify content and align items:
+
+there is a css flex box.
+
+the main axis is the direction in which the flex items are liad out. while the ceross axis is perpendicular to the main axis. 
+the main axis can either be horizontal, (row) or verticle (column)
+
+This then can set items using justify-contenrt and align-items. 
+align items is the cross section and justify content is the main axis. 
+so if u set flex direction to column, the main axis is the y axis. this means you would use justify content to align it properly.   
+
+
+if you use the ::before in css. this is essentially a psuedo div or element of some sort that will be placed before the element. 
+
+you can also use ::after to place something after.
