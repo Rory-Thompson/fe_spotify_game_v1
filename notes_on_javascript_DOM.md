@@ -12,8 +12,10 @@ The way in which to use these methods looks like this. `document.getElementById(
 
 #### Function declaration:  
 - `function nextStep() {}`  
-    The function name is NextStep and can be called as such. the contents of the function are placed in the curly brackets.
-
+    The function name is NextStep and can be called as such. the contents of the function are placed in the curly brackets.  
+- `function(user) {return user.online;}`  
+    Functions can also be declared with the short hand method: `user => user.online`.  
+    This can be useful for array methods or things where u must pass a function and return something. such as `users.every((user) => {user.ISONLINE})`
 #### mathematical operators:  
 - addition  
     `+`

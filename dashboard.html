@@ -7,10 +7,11 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="styles.css" />
     <script src="app.js" defer></script>
+    <script src="testhelpers.js" defer></script>
 </head>
 <body>
     <div class="full-container full-container-dashboard">
-        <div class="setup-container">
+        <div class="setup-container" id="setup-container">
             <h1 class="h1-dashboard">Game set up</h1>
             <div class="progress-tab">
                 <button class="tablinks-btn tablinks-btn-active" data-title= "Playlist"></button>
@@ -22,11 +23,11 @@
             <div class="setup-step setup-step-active" id="select-playlist-step">
                 <div class="multi-choice-select-container">
                     <div class="multi-choice-heading">
-                        <h3 class="h3-dashboard" style="padding-bottom: 10px;">Playlists:</h3>
+                        <h3 class="h3-dashboard">Playlists:</h3>
                         <div class="next-button next-button-setup">➜</div>
                     </div>
-                    <div class="multi-choice-heading">
-                        <input type="text" placeholder="search playlists">
+                    <div class="multi-choice-heading" style="padding-bottom: 3px;">
+                        <input type="text" placeholder="search playlists" class = "search-playlist search-input">
                         
                         <button class="sort-btn"><i class="fas fa-sort"></i></button>
                     </div>
@@ -38,23 +39,23 @@
                             <div class="img-container img-container-table">
                                 <img src="https://image-cdn-fa.spotifycdn.com/image/ab67706c0000da847a5356195a7c08a946997f55" alt="playlist-photo">
                             </div>
-                            <div class="text-column text-column-playlist">Skitz Shit</div>
+                            <div class="text-column text-column-playlist" id="search-column">Skitz Shit</div>
                             <div class="text-column text-column-playlist">501 tracks</div>
                         </div>
-                        <div class="row-search row-playlist row-search-selected">
-                            <div class="row-index row-index-playlist row-index-selected"></div>
+                        <div class="row-search row-playlist">
+                            <div class="row-index row-index-playlist"></div>
                             <div class="img-container img-container-table">
                                 <img src="https://image-cdn-ak.spotifycdn.com/image/ab67706c0000da8498eeb8c6d896182a8a383769" alt="playlist-photo">
                             </div>
-                            <div class="text-column text-column-playlist">B Tier</div>
+                            <div class="text-column text-column-playlist" id="search-column">B Tier</div>
                             <div class="text-column text-column-playlist">492 tracks</div>
                         </div>
-                        <div class="row-search row-playlist row-search-selected">
+                        <div class="row-search row-playlist">
                             <div class="row-index row-index-playlist row-index-selected"></div>
                             <div class="img-container img-container-table">
                                 <img src="https://image-cdn-fa.spotifycdn.com/image/ab67706c0000da84c71c7b7748d87012a7efb9dd" alt="playlist-photo">
                             </div>
-                            <div class="text-column text-column-playlist">bangerz</div>
+                            <div class="text-column text-column-playlist" id="search-column">bangerz</div>
                             <div class="text-column text-column-playlist">172 tracks</div>
                         </div>
                         <div class="row-search row-playlist">
@@ -62,7 +63,7 @@
                             <div class="img-container img-container-table">
                                 <img src="https://image-cdn-fa.spotifycdn.com/image/ab67706c0000da8451eae8d8c4e3127f0ece314d" alt="playlist-photo">
                             </div>
-                            <div class="text-column text-column-playlist">shit aint right</div>
+                            <div class="text-column text-column-playlist" id="search-column">shit aint right</div>
                             <div class="text-column text-column-playlist">82 tracks</div>
                         </div>
                         <div class="row-search row-playlist">
@@ -70,7 +71,7 @@
                             <div class="img-container img-container-table">
                                 <img src="https://mosaic.scdn.co/60/ab67616d00001e02072e9faef2ef7b6db63834a3ab67616d00001e022f44aec83b20e40f3baef73cab67616d00001e02600adbc750285ea1a8da249fab67616d00001e02e42b5fea4ac4c3d6328b622b" alt="playlist-photo">
                             </div>
-                            <div class="text-column text-column-playlist">trash</div>
+                            <div class="text-column text-column-playlist" id="search-column">trash</div>
                             <div class="text-column text-column-playlist">91 tracks</div>
                         </div>
                         <div class="row-search row-playlist">
@@ -78,7 +79,7 @@
                             <div class="img-container img-container-table">
                                 <img src="https://mosaic.scdn.co/60/ab67616d00001e0244f804700550dd335e9aec78ab67616d00001e027586047ed2cb60ea3188b5bdab67616d00001e02dfe4bfe695c4192e547e72c7ab67616d00001e02f30e1411889fd752e21cc515" alt="playlist-photo">
                             </div>
-                            <div class="text-column text-column-playlist">ya nan</div>
+                            <div class="text-column text-column-playlist" id="search-column">ya nan</div>
                             <div class="text-column text-column-playlist">61 tracks</div>
                         </div>
                         <div class="row-search row-playlist">
@@ -86,7 +87,7 @@
                             <div class="img-container img-container-table">
                                 <img src="https://mosaic.scdn.co/60/ab67616d00001e026994bc99995860421956ea83ab67616d00001e02b1472111dcfb4c0eb5bf5bdeab67616d00001e02cb4d117414b45fffca56ccb4ab67616d00001e02d84b5673b7a8b8247d4bde4e" alt="playlist-photo">
                             </div>
-                            <div class="text-column text-column-playlist">The play.    list</div>
+                            <div class="text-column text-column-playlist" id="search-column">The play.    list</div>
                             <div class="text-column text-column-playlist">10 tracks</div>
                         </div>
                         <div class="row-search row-playlist">
@@ -94,7 +95,7 @@
                             <div class="img-container img-container-table">
                                 <img src="https://mosaic.scdn.co/60/ab67616d00001e0205a19220d37bc871db939b64ab67616d00001e020b51f8d91f3a21e8426361aeab67616d00001e0285c160f9951c570a8e81f998ab67616d00001e02e87fc9dee06ae964efd36bea" alt="playlist-photo">
                             </div>
-                            <div class="text-column text-column-playlist">Runnin' for a g</div>
+                            <div class="text-column text-column-playlist" id="search-column">Runnin' for a g</div>
                             <div class="text-column text-column-playlist">22 tracks</div>
                         </div>
                         <div class="row-search row-playlist">
@@ -102,7 +103,7 @@
                             <div class="img-container img-container-table">
                                 <img src="https://image-cdn-ak.spotifycdn.com/image/ab67706c0000da8498eeb8c6d896182a8a383769" alt="playlist-photo">
                             </div>
-                            <div class="text-column text-column-playlist">B Tier</div>
+                            <div class="text-column text-column-playlist" id="search-column">B Tier</div>
                             <div class="text-column text-column-playlist">492 tracks</div>
                         </div>
                         <div class="row-search row-playlist">
@@ -110,7 +111,7 @@
                             <div class="img-container img-container-table">
                                 <img src="https://image-cdn-ak.spotifycdn.com/image/ab67706c0000da8498eeb8c6d896182a8a383769" alt="playlist-photo">
                             </div>
-                            <div class="text-column text-column-playlist">B Tier</div>
+                            <div class="text-column text-column-playlist" id="search-column">B Tier</div>
                             <div class="text-column text-column-playlist">492 tracks</div>
                         </div>
                         <div class="row-search row-playlist">
@@ -118,8 +119,8 @@
                             <div class="img-container img-container-table">
                                 <img src="https://image-cdn-ak.spotifycdn.com/image/ab67706c0000da8498eeb8c6d896182a8a383769" alt="playlist-photo">
                             </div>
-                            <div class="text-column text-column-playlist">B Tier</div>
-                            <div class="text-column text-column-playlist">492 tracks</div>
+                            <div class="text-column text-column-playlist" id="search-column">B Tier</div>
+                            <div class="text-column text-column-playlist" >492 tracks</div>
                         </div>
                     </div>
                 </div>
@@ -134,7 +135,7 @@
                         <div class="multi-choice-option btn">
                             <h4 class="h3-dashboard">Easy</h4>
                         </div>
-                        <div class="multi-choice-option btn row-search-selected">
+                        <div class="multi-choice-option btn">
                             <h4 class="h3-dashboard">medium</h4>
                         </div>
                         <div class="multi-choice-option btn">
@@ -177,6 +178,39 @@
                         </div>   
                     </div>
                 </div>
+            </div>
+            <div id="loading-state" style="display: none;">
+                <svg class="spinner" width="120" height="120" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <g class="spinner-rotate">
+                        <circle class="spinner-ring" cx="12" cy="12" r="9.5" stroke-width="2" fill="none" />
+                    </g>
+                    Sorry, your browser does not support inline SVG.
+                </svg> 
+            </div>
+            <div class="start-game-button-container">
+                <div class="start-game-btn btn">Start playing
+                     <span class="tooltiptext">Use tabs at the top to navigate setup steps.</span>
+                </div>
+            </div>
+            
+        </div>
+        <div class="game-container setup-container" style="display: none;" id="game-container">
+            <svg class="game-progress-bar" width="200" height="100" viewBox="0  0 48 24" xmlns="http://www.w3.org/2000/svg">
+                <ellipse class="progress-indicator-shape" cx="24" cy="12" rx="13" ry="7" stroke-width="1" fill="none" stroke="#333"/>
+                <ellipse class="progress-indicator-shape progress-complete"
+                cx="24" cy="12" rx="13" ry="7" stroke-width="1" fill="none" stroke="#ff6ec4"/>
+                <text x="24" y="12" text-anchor="middle" dominant-baseline="middle" font-size="5" fill="#f2f2f2">1/3</text>
+
+            </svg>
+            lets play some games bitches!
+            <div class="question-container">
+                question 1
+            </div>
+            <div class="question-container">
+                question 2
+            </div>
+            <div class="question-container">
+                question 3
             </div>
         </div>
     </div>

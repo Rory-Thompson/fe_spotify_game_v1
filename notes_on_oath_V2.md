@@ -35,7 +35,7 @@ this access token along side the client secret token can be used to generate an 
     More? -d "grant_type=authorization_code" ^
     More? -d "code=ENTER_CODE_FROM_URL" ^
     More? -d "redirect_uri=https://example.org/callback" ^
-    More? -d "client_id=***REMOVED***" ^
-    More? -d "client_secret=***REMOVED***"</pre>
+    More? -d "client_id=CLIENT_ID" ^
+    More? -d "client_secret=CLIENT_SECRET"</pre>
 - **Curl request to get user playlists.**
     <pre> curl -H "Authorization: Bearer ENTER_ACCESS_TOKEN" -H "Accept: application/json" -H "Content-Type:application/json" https://api.spotify.com/v1/me/playlists </pre>

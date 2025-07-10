@@ -1,0 +1,9 @@
+1. enhance class functionality. make all steps become a class that is a child class of another class topic or something. it will contain all questions and topics.
+
+3. add submit button at the end of the set up steps.
+
+2. begin the creation of the first question. 
+
+3. create transition between the submit and the first question. 
+
+4. make the search play lists interactive
