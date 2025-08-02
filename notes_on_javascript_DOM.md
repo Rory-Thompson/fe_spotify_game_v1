@@ -144,5 +144,11 @@ toggles on and off the style class
 Where list is a list of classes for a particular element.
 - `list.add("myStyle");`
 
+### Map  
+The map has some useful features.
+- `const myMap new Map();`
+- `myMap.get(key);`
+
+
 
 

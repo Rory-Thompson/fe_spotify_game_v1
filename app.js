@@ -1,19 +1,18 @@
 const nextButtonsSetup = document.querySelectorAll(".next-button-setup");//finds all the elements that have the class .nextbutton
 const setupTabLinks = document.querySelectorAll(".tablinks-btn");
 const setupSteps = document.querySelectorAll(".setup-step");
-const rowSearch = document.querySelectorAll(".row-search");
+const rowSearchPlaylist = document.querySelectorAll(".row-playlist");
 const playlistSelectIndex = document.querySelectorAll(".row-index-playlist");
 const multiChoiceOption = document.querySelectorAll(".multi-choice-option");
-const inputSearchRows = document.querySelectorAll(".search-input");
+const playlistSearch = document.querySelector(".search-input-playlist");
 const rowSearchContainer = document.querySelector(".rows-search-container");//used for the shadow effect for a scrollable container.
 const StartPlayingBtn = document.querySelector(".start-game-btn");
-const gameContainer = document.querySelector("#game-container");
 const setupContainer = document.querySelector("#setup-container");
 
 let activeTabIndex = 0;
 console.log(setupTabLinks.length);
 console.log(setupTabLinks)
-console.log("row search elements: ", rowSearch)
+console.log("row search elements: ", rowSearchPlaylist)
 const setupCompletion = new Map();
 
 //setupCompletion.
@@ -31,29 +30,56 @@ class setupStep {
 //maybe it makes sense in the class setupStep (that will be a child of the class question or something)
 // There will be a reference to a pointer to a sub class that will be options. that way we know exactly the options attached to a step
 
-inputSearchRows.forEach((node) => {
-    node.addEventListener("input", (event) => {
+playlistSearch.addEventListener("input", (event) => {
         //the browser will pass the event into the first parameter of the function. I could technically define it as 'apple' or something.
         // parent division, then find the container with the rows in it. 
-        const searchContainer = node.closest(".multi-choice-select-container"); 
-        const rowsContainerChildren = searchContainer.querySelectorAll("#search-column");
-        console.log("input value changed to: ", event.target.value);
+        const fullContainerName = ".multi-choice-select-container";
+        const text = event.target.value;
+        const searchColumn = "#search-column";
+        const hideClassName = "hide-row-search";
+        let searchContainer = playlistSearch.closest(fullContainerName);
+        //console.log("search container: ", searchContainer);
+        searchList(searchContainer, searchColumn, hideClassName,text);
+
+
+    });
+
+function searchList(searchContainer, searchColumn, hideClassName, text) {
+    //purpose: to be used when there is an input search field. 
+    //searchContainer is the container whos children is the rows that will be eliminated as the user types. (the DOM OBJECT)
+    //search column , hideclassname text are all string values.  
+        const rowsContainerChildren = searchContainer.querySelectorAll(searchColumn);
+        console.log("input value changed to: ", text);
         console.log("children to check: ", rowsContainerChildren);
         rowsContainerChildren.forEach((childNode) => {
             //each node is a column in a .row-search div
-            //console.log("checking child node: ", childNode, "content: ", childNode.textContent)
-            if (childNode.textContent.toLowerCase().includes(event.target.value.toLowerCase())) {
-                childNode.parentNode.classList.remove("hide-row-search");
+            console.log("checking child node: ", childNode, "content: ", childNode.textContent);
+            if (childNode.textContent.toLowerCase().includes(text.toLowerCase())) {
+                childNode.parentNode.classList.remove(hideClassName);
             } else {
-                childNode.parentNode.classList.add("hide-row-search");
-                //console.log("row remove: ", childNode.textContent, "element: ", childNode.parentNode)
+                childNode.parentNode.classList.add(hideClassName);
+                console.log("row remove: ", childNode.textContent, "element: ", childNode.parentNode)
             }
 
         })
 
-    });
+}
+function selectMultiChoiceOption(optionElement, selectedClassName) {
+    //Idea:
+    //attach a select option method to a instantiation of a question (or setup step)
+    // design would page class.
+    //containing 2 sub classes, setup, and question.
+    // then a setup step would have sub classes again.
+    // and questions would have subclasses again. 
 
-})
+    console.log("selected element", optionElement, "classlist before: ",optionElement.classList);
+    if (optionElement.classList.contains(selectedClassName)) {
+        optionElement.classList.remove(selectedClassName);
+    } else {
+         optionElement.classList.add(selectedClassName);
+    }
+    console.log("classList after: ", optionElement.classList)
+}
 
 for (let j = 0; j<multiChoiceOption.length; j++) {
     multiChoiceOption[j].addEventListener("click", () => {
@@ -76,22 +102,6 @@ for (let j = 0; j<multiChoiceOption.length; j++) {
             setCompletionStatus(setupCompletion.get(stepName),true,"complete");
         }
     })
-}
-function selectMultiChoiceOption(optionElement, selectedClassName) {
-    //Idea:
-    //attach a select option method to a instantiation of a question (or setup step)
-    // design would page class.
-    //containing 2 sub classes, setup, and question.
-    // then a setup step would have sub classes again.
-    // and questions would have subclasses again. 
-
-    console.log("selected element", optionElement, "classlist before: ",optionElement.classList);
-    if (optionElement.classList.contains(selectedClassName)) {
-        optionElement.classList.remove(selectedClassName);
-    } else {
-         optionElement.classList.add(selectedClassName);
-    }
-    console.log("classList after: ", optionElement.classList)
 }
 
 for (i=0; i< setupSteps.length; i++) {
@@ -119,13 +129,14 @@ function setCompletionStatus(currSetupStep, value,completeKeyWord) {
     checkFullSetupCompletion(setupCompletion);
 }
 
-for (let i=0; i<rowSearch.length; i++) {
+for (let i=0; i<rowSearchPlaylist.length; i++) {
     //the key word let must be used to define i. this is because each instantiation of the function  will remember the variables from the scope WHEN IT WAS CREATED.
     //if this is not done it will just remember the function scope. (the last value of i)
     //for every single row we must add a listen event. 
-    rowSearch[i].addEventListener("click", () => {
+    console.log("adding event listener to: ", rowSearchPlaylist[i]);
+    rowSearchPlaylist[i].addEventListener("click", () => {
         console.log("i value: ", i)
-        selectPlaylistOption(rowSearch[i], "row-search-selected");
+        selectPlaylistOption(rowSearchPlaylist[i], "row-search-selected");
         
     })
 }
@@ -257,7 +268,6 @@ rowSearchContainer.addEventListener("scroll", () => {
 window.addEventListener('load', () => {
     //on content load we need to set a scroll shadow detection. 
     updateMask(rowSearchContainer);
-    TestGame();
 });
 
 StartPlayingBtn.addEventListener("click", () => {
@@ -271,7 +281,7 @@ StartPlayingBtn.addEventListener("click", () => {
     const loadingDivId = "loading-state";
     setLoadingState(setLoadingStateElement,loadingDivId);
     setTimeout(() => {
-        console.log("waited 5 seconds!");
+        console.log("waited 3 seconds!");
         removeLoadingState(setLoadingStateElement,"#loading-state");
         if (true) {
             //successful game creation.
@@ -280,7 +290,7 @@ StartPlayingBtn.addEventListener("click", () => {
             gameContainer.style.removeProperty("display");
             console.log("game begun fools.");
 
-
+        userProgressObject.beginGame();
         } else {
             removeChildrenInLineDisplays(setLoadingStateElement);
         }
@@ -316,9 +326,11 @@ function setLoadingState(element, loadingDivId) {
 
     for (let i = 0; i<childContent.length; i++) {
         //set display as none
+        console.log(childContent[i].id);
         if (childContent[i].id != loadingDivId) {
             childContent[i].style.display = "none";
         }else {
+            console.log("loading element: ", childContent[i]);
             childContent[i].style.display = "block";
             element.style.display = "flex";
             element.style.alignItems = "center";

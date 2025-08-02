@@ -33,4 +33,43 @@ so if u set flex direction to column, the main axis is the y axis. this means yo
 
 if you use the ::before in css. this is essentially a psuedo div or element of some sort that will be placed before the element. 
 
-you can also use ::after to place something after.
+you can also use ::after to place something after. it is essentially a div.
+
+
+svg. 
+
+stroke-dasharray is a property to define the dash of an element.
+
+"4" means there is a dash of 4 units long then a gap of 4 units long.
+
+"4 1" means there is a dash of 4 units long, then a dash of 1 unit long
+
+"4 1 2" means there is a dash of 4 units long, then a gap of 1 unit long then a dash of 2 units long then a gap of 4 units long and so on.
+"0 4 0" will have a gap of 4 units long then a dash of 4 units and so on .
+
+the units used can depend on your thing. if you have a circle, it is the perimeter, which is 2 pi r, so 9 radi circle is 60 units.
+so if u do 30 then 30, it should be even. 
+
+the dash offset is the same thing, the amount of offsets used to shift it BACKWARDS along the path (if you set negative) if you set positive it would 
+be forward along the path. if your circle is 60 length, then at -30 it would essentially be flipped by 180 degrees.  
+
+
+
+the beauty of viewbox.
+
+viewBox="0 0 24 24"
+
+this tells svg that i am drawing within a 24 by 24 square.
+
+then width set to 120px and height set to 120 px means stretch this virtual square to 120x120 pixels. the internal dimensions can still be considered
+within the 24 by 24 square (such as the r as 9.5 radius) 
+
+for this particular code, remember row-search-selected is used to define if a row is selected or not. 
+
+
+transition: propery css. 
+
+the transition property transition: <property> <time> <method>.
+when that property is updated, there is a transition phase.
+say you use transition: transform. when an element has the transform tag added, it will start form the initial point.
+than transform via the method described, over the period of time. 
