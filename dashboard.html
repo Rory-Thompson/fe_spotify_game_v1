@@ -39,94 +39,17 @@
                             
                         
                     <div class="rows-search-container rows-search-container-playlist">
-                        <div class="row-search row-playlist">
-                            <div class="row-index row-index-playlist"></div>
-                            <div class="img-container img-container-table">
-                                <img src="https://image-cdn-fa.spotifycdn.com/image/ab67706c0000da847a5356195a7c08a946997f55" alt="playlist-photo">
+                        <template id="row-playlist-template">
+                            <!-- this template is not currently used but could be.  -->
+                            <div class="row-search row-playlist">
+                                <div class="row-index row-index-playlist"></div>
+                                <div class="img-container img-container-table">
+                                    <img src="https://image-cdn-fa.spotifycdn.com/image/ab67706c0000da847a5356195a7c08a946997f55" alt="playlist-photo">
+                                </div>
+                                <div class="text-column text-column-playlist" id="search-column">Skitz Shit</div>
+                                <div class="text-column text-column-playlist">501 tracks</div>
                             </div>
-                            <div class="text-column text-column-playlist" id="search-column">Skitz Shit</div>
-                            <div class="text-column text-column-playlist">501 tracks</div>
-                        </div>
-                        <div class="row-search row-playlist">
-                            <div class="row-index row-index-playlist"></div>
-                            <div class="img-container img-container-table">
-                                <img src="https://image-cdn-ak.spotifycdn.com/image/ab67706c0000da8498eeb8c6d896182a8a383769" alt="playlist-photo">
-                            </div>
-                            <div class="text-column text-column-playlist" id="search-column">B Tier</div>
-                            <div class="text-column text-column-playlist">492 tracks</div>
-                        </div>
-                        <div class="row-search row-playlist">
-                            <div class="row-index row-index-playlist row-index-selected"></div>
-                            <div class="img-container img-container-table">
-                                <img src="https://image-cdn-fa.spotifycdn.com/image/ab67706c0000da84c71c7b7748d87012a7efb9dd" alt="playlist-photo">
-                            </div>
-                            <div class="text-column text-column-playlist" id="search-column">bangerz</div>
-                            <div class="text-column text-column-playlist">172 tracks</div>
-                        </div>
-                        <div class="row-search row-playlist">
-                            <div class="row-index row-index-playlist"></div>
-                            <div class="img-container img-container-table">
-                                <img src="https://image-cdn-fa.spotifycdn.com/image/ab67706c0000da8451eae8d8c4e3127f0ece314d" alt="playlist-photo">
-                            </div>
-                            <div class="text-column text-column-playlist" id="search-column">shit aint right</div>
-                            <div class="text-column text-column-playlist">82 tracks</div>
-                        </div>
-                        <div class="row-search row-playlist">
-                            <div class="row-index row-index-playlist"></div>
-                            <div class="img-container img-container-table">
-                                <img src="https://mosaic.scdn.co/60/ab67616d00001e02072e9faef2ef7b6db63834a3ab67616d00001e022f44aec83b20e40f3baef73cab67616d00001e02600adbc750285ea1a8da249fab67616d00001e02e42b5fea4ac4c3d6328b622b" alt="playlist-photo">
-                            </div>
-                            <div class="text-column text-column-playlist" id="search-column">trash</div>
-                            <div class="text-column text-column-playlist">91 tracks</div>
-                        </div>
-                        <div class="row-search row-playlist">
-                            <div class="row-index row-index-playlist"></div>
-                            <div class="img-container img-container-table">
-                                <img src="https://mosaic.scdn.co/60/ab67616d00001e0244f804700550dd335e9aec78ab67616d00001e027586047ed2cb60ea3188b5bdab67616d00001e02dfe4bfe695c4192e547e72c7ab67616d00001e02f30e1411889fd752e21cc515" alt="playlist-photo">
-                            </div>
-                            <div class="text-column text-column-playlist" id="search-column">ya nan</div>
-                            <div class="text-column text-column-playlist">61 tracks</div>
-                        </div>
-                        <div class="row-search row-playlist">
-                            <div class="row-index row-index-playlist"></div>
-                            <div class="img-container img-container-table">
-                                <img src="https://mosaic.scdn.co/60/ab67616d00001e026994bc99995860421956ea83ab67616d00001e02b1472111dcfb4c0eb5bf5bdeab67616d00001e02cb4d117414b45fffca56ccb4ab67616d00001e02d84b5673b7a8b8247d4bde4e" alt="playlist-photo">
-                            </div>
-                            <div class="text-column text-column-playlist" id="search-column">The play.    list</div>
-                            <div class="text-column text-column-playlist">10 tracks</div>
-                        </div>
-                        <div class="row-search row-playlist">
-                            <div class="row-index row-index-playlist"></div>
-                            <div class="img-container img-container-table">
-                                <img src="https://mosaic.scdn.co/60/ab67616d00001e0205a19220d37bc871db939b64ab67616d00001e020b51f8d91f3a21e8426361aeab67616d00001e0285c160f9951c570a8e81f998ab67616d00001e02e87fc9dee06ae964efd36bea" alt="playlist-photo">
-                            </div>
-                            <div class="text-column text-column-playlist" id="search-column">Runnin' for a g</div>
-                            <div class="text-column text-column-playlist">22 tracks</div>
-                        </div>
-                        <div class="row-search row-playlist">
-                            <div class="row-index row-index-playlist"></div>
-                            <div class="img-container img-container-table">
-                                <img src="https://image-cdn-ak.spotifycdn.com/image/ab67706c0000da8498eeb8c6d896182a8a383769" alt="playlist-photo">
-                            </div>
-                            <div class="text-column text-column-playlist" id="search-column">B Tier</div>
-                            <div class="text-column text-column-playlist">492 tracks</div>
-                        </div>
-                        <div class="row-search row-playlist">
-                            <div class="row-index row-index-playlist"></div>
-                            <div class="img-container img-container-table">
-                                <img src="https://image-cdn-ak.spotifycdn.com/image/ab67706c0000da8498eeb8c6d896182a8a383769" alt="playlist-photo">
-                            </div>
-                            <div class="text-column text-column-playlist" id="search-column">B Tier</div>
-                            <div class="text-column text-column-playlist">492 tracks</div>
-                        </div>
-                        <div class="row-search row-playlist">
-                            <div class="row-index row-index-playlist"></div>
-                            <div class="img-container img-container-table">
-                                <img src="https://image-cdn-ak.spotifycdn.com/image/ab67706c0000da8498eeb8c6d896182a8a383769" alt="playlist-photo">
-                            </div>
-                            <div class="text-column text-column-playlist" id="search-column">B Tier</div>
-                            <div class="text-column text-column-playlist" >492 tracks</div>
-                        </div>
+                        </template>
                     </div>
                 </div>
             </div>
@@ -268,6 +191,47 @@
             <div class="start-game-button-container" id="question-submit-btn-container">
                 <div class="start-game-btn btn" id = "question-submit-btn">Check
                     <span class="tooltiptext">Use tabs at the top to navigate setup steps.</span>
+                </div>
+            </div>
+        </div>
+        <div class="game-container review-container setup-container" style="display: none;" id="review-container">
+            <div class="setup-step-active stats-container">
+                
+                <div class="verticle-align-center-1-line">
+                    <i class="fa-solid fa-chart-simple color-text"></i>
+                    <h3 class="h3-dashboard">Results</h3>
+                </div>
+                <div class="verticle-align-center-1-line quiz-lynx-container">
+                    <div class="quiz-lynx-text">Quiz LynX</div>
+                </div>
+                <div class="verticle-align-center-1-line">
+                    <div class="img-container img-container-center">
+                        <img src="https://i.scdn.co/image/ab67616d00004851a1d9c9969f2a7ed27e449a3c" alt="playlist-photo">
+                    </div>
+                </div>
+                <div class="verticle-align-center-1-line">
+                    <div class="stats-table">
+                        <div class="row-search stat-row">
+                            <h3 class="text-column ">Total score:</h3>
+                            <div class="text-column stat"><span class="score-text-review"></span>&nbsp;points</div>
+                        </div>
+                        <div class="row-search stat-row">
+                            <h3 class="text-column">Time answering (s):</h3>
+                            <div class="text-column stat"><span class="time-text"></span>&nbsp;secs</div>
+                        </div>
+                        <div class="row-search stat-row">
+                            <h3 class="text-column">Correct Answers:</h3>
+                            <div class="text-column stat"><span class="correct-answer-text"></span></div>
+                        </div>
+                        <div class="row-search stat-row">
+                            <h3 class="text-column">Best question score:</h3>
+                            <div class="text-column stat"><span class="best-question-text"></span>&nbsp;points</div>
+                        </div>
+                        <div class="row-search stat-row">
+                            <h3 class="text-column">Best known artist:</h3>
+                            <div class="text-column stat"><span class="best-artist-text"></span></div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

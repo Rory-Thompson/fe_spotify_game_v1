@@ -1,12 +1,17 @@
 1. enhance class functionality. make all steps become a class that is a child class of another class topic or something. it will contain all questions and topics.
 
-2. begin creation of the second question. (will need to create a search element that can be used in multiple types of questions. )
-
-3. I still think there needs to be a distinction between a right answer the user got, and a right answer to show.
+2. I still think there needs to be a distinction between a right answer the user got, and a right answer to show.
 There also needs to be a over right or wrong maybe in the bottom right or the top right. 
 
-4. if the user selectss check answer twice in a row they can get double points, it needs to set pointer events when the explosion happens.
+3. if the user selectss check answer twice in a row they can get double points, it needs to set pointer events when the explosion happens.
 
-5. in the set up steps. the bottom right button should move the user to the next step. it is more intuitive than having it do nothing. 
+4. in the set up steps. the bottom right button should move the user to the next step. it is more intuitive than having it do nothing. 
 
-6. thoughts on a game. what if a person is playing with 2 people. you have to create a question. that 1 other person gets right but the other person gets wrong. 
+5. the scroll bar for the dropdown is still a little buggy. I reckon it is worth making the length of the dropdown being the required length to fit 
+all of the FILTERED options. this way the scrollbar is the right length. i also think we should set the dropdown height inside of the instantiation
+not inside of the css. 
+
+6. each question should have a check check answer button method. this way whenever the button is clicked for submit answer,
+the current question rendered we can just call its update button logic. it seems a little wierd currently if it doesnt happen sequentially
+
+8. thoughts on a game. what if a person is playing with 2 people. you have to create a question. that 1 other person gets right but the other person gets wrong. 

@@ -102,6 +102,8 @@ The if else statement uses the above notation. also note that it can be run with
     Finds the element by classname.
 - `getElementsbyClassName(name)[0].id`  
     will return the elements id of the first element.
+- `element.querySelector(".className <or> .id")`  
+    can be run on document.querySector. but essentially it returns the first element inside of an element of a class name or id
 
 ### Methods for updating html content:
 The way in which these methods are used would look something like this. `document.getElementById("demo").innerHTML = "Hello World!";`
@@ -119,6 +121,7 @@ The way in which these methods are used would look something like this. `documen
 - `document.appendChild(element)`
 - `document.replaceChild(new, old)`
 - `document.write(text)`
+- `element.insertBefore(div-to-insert-into, elementAfter);`
 
 ### Event handler:  
 `document.getElementById(id).onclick = function(){code}`  
@@ -148,7 +151,20 @@ Where list is a list of classes for a particular element.
 The map has some useful features.
 - `const myMap new Map();`
 - `myMap.get(key);`
+- `[...myMap.keys()]`
+- `const entries = [...map.entries()];`
 
+### Useful Features:  
+ - `let result = condition ? valueIfTrue : valueIfFalse;`  
+    This is a useful feature of asigning to a variable based on a condition.
+- `condition && doSomething();`  
+    A feature to do a function if and only if a condition is true before it.
+- `let value = userInput || "default";`  
+    if a variable breaks down to be a falsy, 0, null "" etc, then it sets a default.
+- `let value = userInput ?? "default";`  
+    This is the same as the previous line except it is only for null or undefined. (not 0 etc)
+- `const double = x => x * 2;`  
+    This is a arrow function assignment. 
 
 
 

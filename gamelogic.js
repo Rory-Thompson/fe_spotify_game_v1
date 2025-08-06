@@ -1,4 +1,4 @@
-const questionCount = 4;
+const questionCount = 3;
 const root = document.documentElement;
 
 const questionSubmitBtn = document.querySelector("#question-submit-btn");
@@ -7,7 +7,8 @@ const gameScore = document.querySelector("#game-score");
 const questionInput = document.querySelector("#game-select-search-input");
 const rowSearchDropdown = document.querySelectorAll(".row-search-dropdown");
 const rowSearchContainerDropdown = document.querySelector(".rows-search-container-dropdown");
-
+const tempProgressElement = document.querySelector(".game-progress-bar");
+const reviewContainer = document.querySelector("#review-container");
 
 questionSubmitBtn.addEventListener("click", () => {
     const qDisp  = userProgressObject.questionDisplayed;
@@ -30,10 +31,25 @@ questionSubmitBtn.addEventListener("click", () => {
         })
     } else {
         console.log("user is going to the next question. ");
-        userProgressObject.questionDisplayed++;
         userProgressObject.questionsCompleted++;
-        userProgressObject.renderQuestion();
+        console.log("question Count: ", userProgressObject.questionCount);
+        console.log("completed questions: ", userProgressObject.questionsCompleted);
+        if (userProgressObject.questionsCompleted >= userProgressObject.questionCount) {
+            //we go to the review page, game complete./
+            console.log("game is complete. user has completed al l the questions ");
+            //const curr = userProgressObject.questionObjectsMap.get(userProgressObject.questionDisplayed);
+
+
+            //console.log(curr);
+            //curr.element.style.display = "none";
+            userProgressObject.collectStats();
+            userProgressObject.goReview();
+        } else {
+            userProgressObject.questionDisplayed++;
+            userProgressObject.renderQuestion();
         questionSubmitBtn.innerHTML = "Check";
+        }
+        
     };
 });
 class Question {
@@ -46,15 +62,18 @@ class Question {
         }
         //where data is a json object. 
         this.id = data.id;
+        this.userCorrect= false;
         this.questionNumber= data.questionNumber;
         this.completionStatus=data.completionStatus;
         this.element = null; //this will be completed by a render method. will be inserted in the dom and should be able to access directly.
         this.type = data.type;
         this.userAnswer = data.userAnswer;// an index for a list of options. is dynamic type though. 
+        this.userScore = 0;
         this.answer = data.answer;// is matched to the user answer. 
         this.templateName = data.templateName;
         this.afterElement = document.querySelector("#question-submit-btn-container");//insert an question before this element.
         this.container = document.querySelector("#game-container");
+        this.artistTopic = data.artistTopic;
         this.timeStart = null;
         this.timeEnd = null;
         //should we handle this as an error of the container and after element can not be found? 
@@ -101,7 +120,7 @@ class guessAlbumCover extends Question {
             throw new Error("a required element could not be found.");
         };
         //define the searchlist container
-        this.searchListManager = new searchListRows(this.options, this.rowSearchContainerDropdown,this.questionInput, this.searchContainer,1,2,createSmallSearch, this);//pass inthe question directly. 
+        this.searchListManager = new searchListRows(this.options, this.rowSearchContainerDropdown,this.questionInput, this.searchContainer,3,3,createSmallSearch, this);//pass inthe question directly. 
         this.searchListManager.render();
         //this.canvasElement = clone.querySelector("#img-canvas");
         //this.imgElement = clone.querySelector("#album-check-question-img");
@@ -134,21 +153,23 @@ class guessAlbumCover extends Question {
         console.log("user answered: ", this.userAnswer,"this.answer: ", this.answer);
         const answerElement = this.element.querySelector(".answer-container");
         let score = 0;
+        this.timeEnd = Date.now();
+        const timeTaken = (this.timeEnd-this.timeStart)/1000;
+        this.timeTaken = timeTaken;
         if (this.userAnswer == this.answer) {
-            this.timeEnd = Date.now();
-            const timeTaken = (this.timeEnd-this.timeStart)/1000;
+            this.userCorrect=true;
             console.log("user was correct");
             const amountChange = 1000/this.numGuessesAllow
             const quot = 1000-((amountChange)*(this.userNumGuesses-1));//(START AT 1000 when y intercept should be 1000. 
             score = Math.round(recipricolCalc(0.1,quot,1,timeTaken, 0));
             console.log("score given: ", score, "quot: ", quot);
             userProgressObject.userScore+=score;
+            this.userScore = score;
             this.completionStatus = true;
             if (answerElement == null) {
                 throw new Error("no answer element found to update. ");
             }
             answerElement.classList.add("right-answer-txt");
-            
         } else {
             console.log("user was incorrect");
             if (answerElement == null) {
@@ -258,7 +279,11 @@ class multipleChoiceQuestion extends Question {
         //at the moment we always add the answer
 
         this.timeEnd = Date.now();
+        const timeTaken = (this.timeEnd-this.timeStart)/1000;
+        this.timeTaken = timeTaken;
         console.log("checking answer. answer selected: ", this.userAnswer, "actual answer. ", this.answer);
+        console.log("this.optionElements: ", this.optionElements);
+        console.log("is this working? ", this.optionElements.get(this.answer));
         this.optionElements.get(this.answer).classList.add("right-answer-btn");
         let pointsFor = 0;
         if (this.userAnswer != this.answer) {
@@ -266,7 +291,7 @@ class multipleChoiceQuestion extends Question {
             this.optionElements.get(this.userAnswer).classList.add("wrong-answer-btn");
         } else {
             console.log("user was correct. ");
-            const timeTaken = (this.timeEnd-this.timeStart)/1000;
+            this.userCorrect = true;
             console.log("time taken: ", timeTaken);
             pointsFor += Math.round(recipricolCalc(0.1,1000,1,timeTaken, 0));
         }
@@ -275,6 +300,7 @@ class multipleChoiceQuestion extends Question {
         console.log("user points recieved: ", pointsFor, )
         //calculate the user score 
         userProgressObject.userScore+=pointsFor;
+        this.userScore = pointsFor;
         console.log("user points recieved: ", pointsFor, "score to update: ", userProgressObject.pointsFor);
         moveNumbers(pointsFor);//run function to update the points score.
         this.completionStatus = true;
@@ -283,9 +309,31 @@ class multipleChoiceQuestion extends Question {
     }
 
 }
-const tempQuestions = createQuestions();
-const tempProgressElement = document.querySelector(".game-progress-bar");
 
+
+class albumReleaseMultiChoice extends multipleChoiceQuestion {
+    //purpose: this requires a little bit of extra logic on top of the render function to add in the image. 
+
+    constructor(data) {
+        super(data);
+        this.imageLocation = data.imageLocation;
+        this.appendImage = appendImage;//use this function. 
+    }
+    render() {
+        super.render();
+        this.renderImage();
+    }
+
+    renderImage() {
+        const elementAppend = this.element.querySelector(".multi-choice-select-container-quiz")
+        const afterElement = this.element.querySelector(".multi-choice-options-container-quiz");
+        const heading = this.element.querySelector(".multi-choice-heading");
+        this.appendImage(elementAppend, this.imageLocation, afterElement, ["img-container-table", "img-container"]);
+    }
+}
+
+
+const tempQuestions = createQuestions();
 
 class userProgress {
     constructor(questionCount,questionObjectsMap, questionsCompleted, questionDisplayed, progressElement) {
@@ -344,7 +392,49 @@ class userProgress {
         this.updateQuestionProgressDisplay();
         this.updateGraphic();
     }
-    
+    goReview() {
+            this.updateCSSPropertyStats();
+            gameContainer.style.display = "none";
+            questionSubmitBtn.innerHTML = "play again";
+            reviewContainer.removeAttribute("style");
+    }
+    collectStats() {
+        //purpose: colates all the stats and sets the required variables inside of the css to these values. \
+        const keys = [...this.questionObjectsMap.keys()];
+        this.gameStats = {timeAnswering: 0, correctAnswers: 0, bestQuestionScore: 0, bestKnownArtist: "none"};
+        
+        //this initialization could go in the initiaalzation but it doesnt really matter.
+        const artistCount = new Map();
+        for (let key of keys) {
+            console.log("question: ", key);
+            const currQuest = this.questionObjectsMap.get(key);
+            console.log("time taken: ", currQuest.timeTaken);
+            this.gameStats.timeAnswering += currQuest.timeTaken;
+            console.log("userCorrect: ", currQuest.userCorrect);
+            this.gameStats.correctAnswers += currQuest.userCorrect;
+            console.log("userScore: ", currQuest.userScore);
+            this.gameStats.bestQuestionScore = currQuest.userScore> this.gameStats.bestQuestionScore ? currQuest.userScore : this.gameStats.bestQuestionScore;
+            //logic for to find the best artist.
+            //each question should have an artistTopic. technically should be by spotifyArtistId but we can do it by the string name for now.
+            console.log("artistTopic: ", currQuest.artistTopic);
+            artistCount.set(currQuest.artistTopic, (artistCount.get(currQuest.artistTopic) || 0) + currQuest.userScore);//ncrement by 1
+        }
+        console.log(" artists count map: ", artistCount);
+        const artists = [...artistCount.keys()];
+        const artistCounts = [...artistCount.values()];
+        const maxIndex = artistCounts.indexOf(Math.max(...artistCounts));
+        this.gameStats.bestKnownArtist = artists[maxIndex] || "your trash";
+        
+    }
+
+    updateCSSPropertyStats() {
+        console.log("updaing properties.")
+        document.documentElement.style.setProperty("--score-final", this.userScore);
+        document.documentElement.style.setProperty("--time-taken-final", Math.round(this.gameStats.timeAnswering));
+        document.documentElement.style.setProperty("--correct-answers-final", this.gameStats.correctAnswers);
+        document.documentElement.style.setProperty("--best-question-final", this.gameStats.bestQuestionScore);
+        document.documentElement.style.setProperty("--best-artist-final", `"${this.gameStats.bestKnownArtist}"`);
+    }
 }
 const userProgressObject = new userProgress(questionCount, tempQuestions,0,0,tempProgressElement);
 //logic for the game progress component. 
@@ -1011,4 +1101,38 @@ class imageRenderer {
     }
 
 }
-//TestGame();//place at the end of the gameLogic. 
+// BELOW IS TEMPORARY TEST CODE.
+// TestGame();//place at the end of the gameLogic. 
+// userProgressObject.questionDisplayed = 2;
+// userProgressObject.questionsCompleted = 2;
+// userProgressObject.renderQuestion();
+// userProgressObject.userScore = 1234;
+// userProgressObject.gameStats = {userScore: 1234, timeAnswering: 30, correctAnswers: 3, bestKnownArtist:"The Rolling Stones", bestQuestionScore: 792};
+// userProgressObject.goReview();
+
+
+function appendImage(element, imgSrc, elementAfter, classList) {
+    //purpose: used to append an image to where ever one lines in the dom. 
+    //element: element we are appending to (the actual dom element)
+    //img src: the location of the image (wether it be a url or in the assets folder.) (string)
+    //element after: the element that will come after the current element (the actual dom element)
+    //classList: an array of strings for the classes you would like appended to the container for the element
+    //note it will always create a container for the image.
+    //this is generic but is used by the multichoiceAlbum release question. 
+    const wrapper = document.createElement("div");
+    wrapper.classList.add("verticle-align-center-1-line");
+    const newElement = document.createElement("div");
+    for (let classStr of classList) {
+        newElement.classList.add(classStr);
+
+    };
+    
+    console.log("newElement: ", newElement);
+    newImage = document.createElement("img");
+    newImage.src = imgSrc;
+    newImage.alt = "album image"//right now ceebs making this dynamic. 
+    newElement.appendChild(newImage);
+    wrapper.appendChild(newElement);
+    console.log("wrapper: ", wrapper);
+    element.insertBefore(wrapper, elementAfter);
+}

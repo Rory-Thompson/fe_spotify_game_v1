@@ -8,12 +8,38 @@
 :root {
     --background-base: #1ed760;
     --wrong-answer: red;
+    --score-final: 0;
+    --time-taken-final: 0;
+    --correct-answers-final: 0;
+    --best-question-final: 0;
+    --best-artist-final:"none";
 }
 @property --score {
   syntax: "<integer>";
   initial-value: 0;
   inherits: false;
 }
+@property --time-taken {
+    syntax: "<integer>";
+    initial-value: 0;
+    inherits: false;
+}
+
+@property --correct-answers {
+    syntax: "<integer>";
+    initial-value: 0;
+    inherits: false;
+}
+
+
+@property --best-question {
+    syntax: "<integer>";
+    initial-value: 0;
+    inherits: false;
+}
+
+
+
 
 .full-container {
     background: 
@@ -719,6 +745,7 @@ h1 {
     max-width: 650px;
     justify-content: center;
     align-items: center;
+    display: flex;
 }
 .game-score {
     color: transparent;
@@ -747,6 +774,105 @@ h1 {
 .score-text:hover {
   --score: 100;
 }
+
+.score-text-review {
+    counter-set: score var(--score);
+    animation: animate-score-text ease-in-out 2s forwards;
+}
+
+.score-text-review::before {
+    content: counter(score);
+}
+
+.time-text {
+    counter-set: time-taken var(--time-taken);
+    animation: animate-time-taken-text ease-in-out 2s forwards;
+
+}
+
+.time-text::before {
+    content: counter(time-taken);
+}
+
+.correct-answer-text {
+    counter-set: correct-answers var(--correct-answers);
+    animation: animate-correct-answers-text ease-in-out 2s forwards;
+}
+
+.correct-answer-text::before {
+    content: counter(correct-answers);
+}
+
+.best-question-text {
+    counter-set: best-question var(--best-question);
+    animation: animate-best-question-text ease-in-out 2s forwards;
+}
+
+.best-question-text::before {
+    content: counter(best-question);
+}
+
+.best-artist-text {
+    position: relative;
+}
+.best-artist-text::before {
+    content: var(--best-artist-final);
+    white-space: nowrap;          /* Prevents line breaks */
+    overflow: visible;            /* Allow it to overflow */
+    display: inline-block;        /* Required for white-space + size control */
+    position: absolute;
+    z-index: 1;
+    color: transparent;
+    animation: animate-blur ease-in-out 2s forwards;
+    transform: translateX(-50%) translateY(-50%);
+}
+
+@keyframes animate-blur {
+    from {
+        text-shadow: 0 0 10px #f2f2f2;
+    }
+    to {
+        text-shadow: 0 0 0px #f2f2f2;
+    }
+}
+
+@keyframes animate-time-taken-text {
+    from {
+        --time-taken: 0;
+    }
+    to {
+        --time-taken: var(--time-taken-final);
+    }
+}
+
+@keyframes animate-best-question-text {
+    from {
+        --best-question: 0;
+    }
+    to {
+        --best-question: var(--best-question-final);
+    }
+}
+
+
+@keyframes animate-score-text {
+    from {
+        --score: 0;
+    }
+    to {
+        --score: var(--score-final);
+    }
+}
+
+@keyframes animate-correct-answers-text {
+    from {
+        --correct-answers: 0;
+    }
+    to {
+        --correct-answers: var(--correct-answers-final);
+    }
+}
+
 
 
 .explosion {
@@ -928,7 +1054,7 @@ h1 {
 .rows-search-container-dropdown {
     position: relative;
     display: none;
-    height: 50px;/*UPDATE THIS VALUE TO CHANGE THE HEIGHT OF THE ROW*/
+    height: 150px;/*UPDATE THIS VALUE TO CHANGE THE HEIGHT OF THE ROW*/
     width: 100%;
     color: #f2f2f2;
     background-color: #666;
@@ -1006,10 +1132,109 @@ h1 {
     height: 3px;
     left: 50%;
     transform: translateX(-50%);
-
-
 }
 
 #img-canvas {
     border-radius: 7px;
 }
+
+.verticle-align-center-1-line {
+    gap: 5px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    width: 100%;
+    padding: 5px 5px;
+}
+
+.review-container {
+    position: relative;
+    justify-content: center;
+}
+
+.review-container::before {
+    content: "";
+    display: none;
+}
+
+.full-container-width-height {
+    flex:1;/* should take up the remainder of the space in the flex container*/
+    position: relative;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.stats-table {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+}
+.stat-row {
+    grid-template-columns: 1fr 100px;
+    position: relative;
+}
+
+.text-column.stat {
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    flex-direction: row;
+    
+}
+
+.stats-container h3 {
+    color: #f2f2f2;
+}
+.color-text {
+    animation: gradientShift 6s ease infinite;
+    background: linear-gradient(60deg, #ff6ec4,#7975ee);
+    color: transparent;
+    -webkit-background-clip: text; /* applys the background to the text itself. */
+    background-size: 400% 400%;
+}
+
+.stat-row::after {
+    position: absolute;
+    width: 100px;
+    content: "";
+    height: 1px;
+    background: #ff6ec4;
+    opacity: 0.5;
+    background-size: 400% 400%;
+    animation: gradientShift 6s ease infinite;
+    z-index: 1;
+    color: #f2f2f2;
+    bottom: 0%;
+    left: 50%;
+    transform: translateX(-50%);
+
+}
+
+.quiz-lynx-container {
+    flex:0.2;
+}
+.quiz-lynx-text {
+    font-family: cursive;
+    position: relative;
+}
+
+
+.quiz-lynx-text::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 5px;
+  background: linear-gradient(60deg, #ff6ec4,#7975ee);
+  opacity: 0.9;
+  border-bottom-left-radius: 50% 100%;
+  border-bottom-right-radius: 50% 100%;
+  transform: translateY(100%);
+}
+

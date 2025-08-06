@@ -8,6 +8,8 @@ const playlistSearch = document.querySelector(".search-input-playlist");
 const rowSearchContainer = document.querySelector(".rows-search-container");//used for the shadow effect for a scrollable container.
 const StartPlayingBtn = document.querySelector(".start-game-btn");
 const setupContainer = document.querySelector("#setup-container");
+const playlistRowSearchContainer = document.querySelector(".rows-search-container-playlist");
+
 
 let activeTabIndex = 0;
 console.log(setupTabLinks.length);
@@ -64,6 +66,47 @@ function searchList(searchContainer, searchColumn, hideClassName, text) {
         })
 
 }
+
+function createRow(data, appendTo) {
+    //purpose: 
+    //to input a json data representing a playlist. and output a dom element appending it to a dom. 
+    //this can probably be  done a lot cleaner but this will do for now. 
+    // it would make sense to have a generic create div function maybe. 
+    const row = document.createElement("div");
+    row.id = data.id;
+    row.classList.add("row-search");
+    row.classList.add("row-playlist");
+    const index = document.createElement("div");
+    index.classList.add("row-index");
+    index.classList.add("row-index-playlist");
+    const imgContainer = document.createElement("div");
+    imgContainer.classList.add("img-container");
+    imgContainer.classList.add("img-container-table");
+    const img = document.createElement("img");
+    img.src = data.coverSource;
+    img.alt = "playlist photo";
+    const playlistTitle = document.createElement("div");
+    playlistTitle.classList.add("text-column");
+    playlistTitle.classList.add("text-column-playlist");
+    playlistTitle.id = "search-column";
+    playlistTitle.innerHTML = data.playlistTitle;
+    const trackCount = document.createElement("div");
+    trackCount.classList.add("text-column");
+    trackCount.classList.add("text-column-playlist");
+    trackCount.innerHTML = `${data.trackCount} tracks`;
+    row.appendChild(index);
+    imgContainer.appendChild(img);
+    row.appendChild(imgContainer);
+    row.appendChild(playlistTitle);
+    row.appendChild(trackCount);
+    //we have to add the relavant event listener: 
+    row.addEventListener("click", () => {
+        console.log("row id value: ", row.id)
+        selectPlaylistOption(row, "row-search-selected");
+    });
+    appendTo.appendChild(row);
+}
+
 function selectMultiChoiceOption(optionElement, selectedClassName) {
     //Idea:
     //attach a select option method to a instantiation of a question (or setup step)
@@ -268,6 +311,11 @@ rowSearchContainer.addEventListener("scroll", () => {
 window.addEventListener('load', () => {
     //on content load we need to set a scroll shadow detection. 
     updateMask(rowSearchContainer);
+    const testPlaylist = getTestPlaylist();
+    for (data of testPlaylist) {
+        console.log("row data: ", data);
+    createRow(data, playlistRowSearchContainer);
+}
 });
 
 StartPlayingBtn.addEventListener("click", () => {
