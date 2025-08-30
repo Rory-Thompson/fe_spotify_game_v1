@@ -26,7 +26,8 @@ this access token along side the client secret token can be used to generate an 
     The authorization code is temporary. It is generated after the user has authticated with the resource owner. it is then placed in the url of the redirect.  
     From this point the Client now sends this code, along side the client secret so now all parties can be verified by the auth server and an access token can now be recieved.
 - **Access token**  
-    Now the access token is the token used by the client for a period of time, to perform actions on behalf of the resource owner. 
+    Now the access token is the token used by the client for a period of time, to perform actions on behalf of the resource owner.  
+    Technically the access token should **NOT** be sent to the user. It should be stored in an encrypted database, the client recieves the user id and matches up with the access token. 
 
 ## Code snippets:  
 - **Curl post requirest to get the access token:**  
@@ -39,3 +40,8 @@ this access token along side the client secret token can be used to generate an 
     More? -d "client_secret=CLIENT_SECRET"</pre>
 - **Curl request to get user playlists.**
     <pre> curl -H "Authorization: Bearer ENTER_ACCESS_TOKEN" -H "Accept: application/json" -H "Content-Type:application/json" https://api.spotify.com/v1/me/playlists </pre>
+- **Curl request to get the tracks in an album** 
+    <pre>curl -H "Authorization: Bearer {ACCESSTOKEN}" -H "Accept: application/json" -H "Content-Type:application/json" https://api.spotify.com/v1/albums/{albumid} <pre>
+
+    <pre>curl -H "Authorization: Bearer {ACCESSTOKEN}" -H "Accept: application/json" -H "Content-Type:application/json" https://api.spotify.com/v1/tracks/{trackid} <pre>
+
