@@ -29,7 +29,11 @@ this access token along side the client secret token can be used to generate an 
     Now the access token is the token used by the client for a period of time, to perform actions on behalf of the resource owner.  
     Technically the access token should **NOT** be sent to the user. It should be stored in an encrypted database, the client recieves the user id and matches up with the access token. 
 
+# how to access the spotify api. 
+the spotify api has some decent documentation. at developer.spotify.com/documentation. below are some code snippets for some pre built curls to the api. 
+
 ## Code snippets:  
+
 - **Curl post requirest to get the access token:**  
     <pre> curl -X POST https://accounts.spotify.com/api/token ^
     More? -H "Content-Type: application/x-www-form-urlencoded" ^
@@ -44,4 +48,9 @@ this access token along side the client secret token can be used to generate an 
     <pre>curl -H "Authorization: Bearer {ACCESSTOKEN}" -H "Accept: application/json" -H "Content-Type:application/json" https://api.spotify.com/v1/albums/{albumid} <pre>
 
     <pre>curl -H "Authorization: Bearer {ACCESSTOKEN}" -H "Accept: application/json" -H "Content-Type:application/json" https://api.spotify.com/v1/tracks/{trackid} <pre>
+- **Curl request to get the tracks on a user playlist.**
+ <pre>
+ curl -G -d "fields=description,uri,href,name,images,tracks.items(track(id,name,album(id,album_type,href,release_date,release_date_precision,name,images)))" -H "Authorization: Bearer BQC_GvFb-5YDv17JG0D5vlhBTUMeSAwXEjZpUiuOMcmVv6GfxHmiesRDNw6gxKRzgB_WqnVNdeq0wCqSk2ZELWdylFdH78M2t1r7fOhJnyJFRRbtP4TWXhci4WOhlmZ9lEcvWWAxL4uAfgDKilNmA9MXsb6hUZn0hHOHdq46GsIUSLt0julGnvV63hZ08pxXbDrqmrtp1FeOZlMkyqPWsBUl5C5K2hDxtq70XV3aNPlD1Q" -H "Accept: application/json" -H "Content-Type:application/json" https://api.spotify.com/v1/playlists/2Vk5bhot7bIK6vUafrZAJF</pre>
 
+note that `-G` means a get request. -d is the query parameters. these are passed in url encoded (i think form url encoded).  
+Spotify uses nested objects. so you can see here. the playlist has the fields description,name etc. but it also has the tracks.items(track). where in each tracks.item there is a track() object with its own fields. then inside that there is an album object. all of this is nested information that can be extracted. 

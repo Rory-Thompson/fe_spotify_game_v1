@@ -9,14 +9,87 @@ const rowSearchContainer = document.querySelector(".rows-search-container");//us
 const StartPlayingBtn = document.querySelector(".start-game-btn");
 const setupContainer = document.querySelector("#setup-container");
 const playlistRowSearchContainer = document.querySelector(".rows-search-container-playlist");
-
+let myTokens;
+let myPlaylists;
 
 let activeTabIndex = 0;
 console.log(setupTabLinks.length);
 console.log(setupTabLinks)
 console.log("row search elements: ", rowSearchPlaylist)
-const setupCompletion = new Map();
+const setupCompletion = new Map();//is a map of setup steps. 
 
+async function accessTokenOnLoad(auth_code) {
+    let accessTokens = await get_access_token("FrankWalker123",auth_code);
+    let myPlaylistsRaw = await get_my_playlists(accessTokens);
+    let myPlaylists = construct_clean_playlists(myPlaylistsRaw);
+    for (playlist of myPlaylists) {
+        createRow(playlist,playlistRowSearchContainer)
+    }
+}
+function getQueryVariable(variable) {
+    //purpose: extract variables from url encoded variables.
+    //  pass in a string of the variable name. eg "code". this gives the auth code. 
+    var query = window.location.search.substring(1);
+    var vars = query.split("&");
+    for (var i=0;i<vars.length;i++) {
+            var pair = vars[i].split("=");
+            if(pair[0] == variable){return pair[1];}
+    }
+    return(false);
+}
+
+
+
+ async function get_access_token(user_id, auth) {
+    console.log("access token passed: ", auth);
+    //purpose: send requirest to base auth api to create and fetch access tokens. 
+    //if no base is put it it will just do the request relative to the current path the website is hosted from. so i can do /api/auth no worries. no need for config. 
+    const response = await fetch("/api/auth", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({userid: user_id, auth_code: auth}),
+    })
+    if (!response.ok) {
+        throw new Error(`the authorization failed from server. Error: ${response.status}`);
+    }
+    myTokens = await response.json(); 
+    console.log("my spotify access tokens: ", myTokens);
+    return myTokens
+ }
+
+ async function get_my_playlists(myTokens) {
+    const response = await fetch("https://api.spotify.com/v1/me/playlists", {
+        headers: {
+            "Accept": "application/json",
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${myTokens.access_token}`
+        }
+    });
+    if (!response.ok) {
+        throw new Error(`the authorization failed from server. Error: ${response.status}`);    
+    }
+    myPlaylists = await response.json();
+    console.log("these are my playlists: ", myPlaylists);
+    return myPlaylists
+}
+
+function construct_clean_playlists(playlists) {
+    //input: a raw response from the spotify api. to the v1/me/playlists location. 
+    let playlistsArray = [];
+    console.log("playlists passed to construct_clean_playlists.",playlists);
+    for (playlist of playlists.items) {
+        playlistsArray.push({
+            "id": playlist.id,
+            "coverSource": playlist.images[playlist.images.length-1].url,
+            "playlistTitle": playlist.name,
+            "trackCount": playlist.tracks.total
+        })
+    };
+    console.log("final clean playlist array. ", playlistsArray);
+    return playlistsArray
+}
 //setupCompletion.
 class setupStep {
     //used for each setup step.
@@ -228,12 +301,7 @@ function selectPlaylistOption(optionElement, selectedClassName) {
             completionStatus = true;
     }
     setCompletionStatus(setupCompletion.get(stepID),completionStatus,"complete");
-
-    
-
-
 }
-
 
 
 console.log("initialization of setup completion: ", setupCompletion);
@@ -312,13 +380,22 @@ window.addEventListener('load', () => {
     //on content load we need to set a scroll shadow detection. 
     updateMask(rowSearchContainer);
     const testPlaylist = getTestPlaylist();
-    for (data of testPlaylist) {
-        console.log("row data: ", data);
-    createRow(data, playlistRowSearchContainer);
-}
+    auth_code = getQueryVariable("code");
+    
+    if (auth_code) {
+        console.log("code extracted successfully.");
+        accessTokenOnLoad(auth_code);
+    } else {
+        console.log("code was not extracted successfully. using default test data.");
+        for (data of testPlaylist) {
+            console.log("row data: ", data);
+            createRow(data, playlistRowSearchContainer);
+        }
+    }
 });
 
-StartPlayingBtn.addEventListener("click", () => {
+
+StartPlayingBtn.addEventListener("click", async () => {
 
     // function when the start playing button is clicked
 
@@ -328,8 +405,15 @@ StartPlayingBtn.addEventListener("click", () => {
     console.log("setup container to be passed: ", setLoadingStateElement)
     const loadingDivId = "loading-state";
     setLoadingState(setLoadingStateElement,loadingDivId);
+    let game_details = getSetupSelectedOptions();
+    let my_game = await getGame(game_details, myTokens.access_token);
+    let game_map =getGameResponseIntoObject(my_game);
+    console.log("game_details: ", game_details);
+    console.log("response get game: ", my_game);
+    userProgressObject = new userProgress(my_game.question_count, game_map,0,0,tempProgressElement);
+
     setTimeout(() => {
-        console.log("waited 3 seconds!");
+        console.log("waited 1 seconds!");
         removeLoadingState(setLoadingStateElement,"#loading-state");
         if (true) {
             //successful game creation.
@@ -342,7 +426,7 @@ StartPlayingBtn.addEventListener("click", () => {
         } else {
             removeChildrenInLineDisplays(setLoadingStateElement);
         }
-    }, 3000);
+    }, 1000);
 
 
 })
@@ -371,7 +455,6 @@ function setLoadingState(element, loadingDivId) {
     }
     const childContent = element.children;
     console.log("child content to be set as display none: ", childContent)
-
     for (let i = 0; i<childContent.length; i++) {
         //set display as none
         console.log(childContent[i].id);
@@ -401,4 +484,72 @@ function removeLoadingState(element, loadingDivId) {
     console.log("loading div to be removed from user view: ", loadingDiv);
     loadingDiv.style.removeProperty("display");//will default to .css file where it is set as display: none;
     
+}
+
+
+async function getGame(json_game_details, access_token) {
+    //purpose: to be called when the user has start a game. 
+    // it will hit the back end api to create the game. 
+    // a game object should be returned. 
+    //playlist_ids: array of strings.
+    //difficulty: String, 
+    // num_questions: Int.
+    //access_token: String. 
+    const url = "/api/game";
+    json_game_details.access_token = access_token;
+    let body = JSON.stringify(json_game_details);
+    console.log("request body: ", body);
+    try {
+        const response = await fetch(url, {
+            method: "POST",
+            body,
+            headers: {
+                "Content-Type": "application/json",
+            }
+        });
+        if (!response.ok) {
+            throw new Error(`Response status: ${response.status}`);
+        }
+        const result = await response.json();
+        console.log("game creation success result: ", result);
+        return result
+    } catch (error) {
+        console.error(error.message);
+    }
+
+}
+
+function getSetupSelectedOptions() {
+    let my_json = {
+        playlist_ids: setupCompletion.get("select-playlist-step").selectedOptions.map(x => x.id),
+        difficulty: setupCompletion.get("select-difficulty-step").selectedOptions.map(x => x.id)[0],//get first eleent (probably should assert the length is 0 )
+        num_questions: parseInt(setupCompletion.get("select-length-step").selectedOptions.map(x => x.id)[0]),
+        num_players: parseInt(setupCompletion.get("select-player-count-step").selectedOptions.map(x => x.id)[0]),
+    }
+    return my_json
+}
+
+function getGameResponseIntoObject(game_response) {
+    //purpose: input the raw json response from the getGame endpoint. 
+    // parse into the json object map that can be used to create the userProgressObject. 
+    let questions = new Map();
+    let i = 0;
+    let temp_question;
+    console.log("game_response.question options: ", game_response.question_options);
+    for (question of game_response.questions) {
+        console.log("begining creation of question id: ", Object.keys(question)[0]);
+        if (Object.keys(question)[0] == "GuessAlbumReleaseYear") {
+            temp_question = new albumReleaseMultiChoice(question.GuessAlbumReleaseYear);
+        } else if (Object.keys(question)[0]=="GuessAlbumTopTrendingSong") {
+            temp_question = new albumReleaseMultiChoice(question.GuessAlbumTopTrendingSong);
+        } else if (Object.keys(question)[0]=="GuessAlbumCover") {
+            question.GuessAlbumCover.options = game_response.question_options;
+            console.log("question: ", question.GuessAlbumCover);
+            temp_question = new guessAlbumCover(question.GuessAlbumCover);
+        }
+        questions.set(i, temp_question);
+        i++;
+    }
+    return questions
+
 }

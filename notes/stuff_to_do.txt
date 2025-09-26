@@ -15,3 +15,6 @@ not inside of the css.
 the current question rendered we can just call its update button logic. it seems a little wierd currently if it doesnt happen sequentially
 
 8. thoughts on a game. what if a person is playing with 2 people. you have to create a question. that 1 other person gets right but the other person gets wrong. 
+
+9. need to wire up the get playlists so that if it fails it keeps my dummy test data. this will all be done through the window "load" event.
+it will see if a valid auth is passed and create the chain from there in an async function. 

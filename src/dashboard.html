@@ -5,10 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="styles.css" />
-    <script src="app.js" defer></script>
-    <script src="testhelpers.js" defer></script>
-    <script src="gamelogic.js" defer></script>
+    <link rel="stylesheet" href="css/styles.css" />
+    <script src="js/app.js" defer></script>
+    <script src="js/game_class_logic.js" defer></script>
+    <script src="js/testhelpers.js" defer></script>
+    <script src="js/gamelogic.js" defer></script>
 </head>
 <body>
     <audio id="myAudio">
@@ -61,13 +62,13 @@
                     </div>
                     <div class="multi-choice-options-container">
                         <div class="multi-choice-option btn">
-                            <h4 class="h3-dashboard">Easy</h4>
+                            <h4 class="h3-dashboard",id="Easy">Easy</h4>
                         </div>
                         <div class="multi-choice-option btn">
-                            <h4 class="h3-dashboard">medium</h4>
+                            <h4 class="h3-dashboard",id="Medium">Medium</h4>
                         </div>
                         <div class="multi-choice-option btn">
-                            <h4 class="h3-dashboard">Hard</h4>
+                            <h4 class="h3-dashboard",id="Hard">Hard</h4>
                         </div>    
                     </div>
                 </div>
@@ -80,10 +81,10 @@
                     </div>
                     <div class="multi-choice-options-container">
                         <div class="multi-choice-option btn">
-                            <h4 class="h3-dashboard">1 player</h4>
+                            <h4 class="h3-dashboard",id="1">1 player</h4>
                         </div>
                         <div class="multi-choice-option btn">
-                            <h4 class="h3-dashboard">2 player</h4>
+                            <h4 class="h3-dashboard"id="2">2 player</h4>
                         </div>    
                     </div>
                 </div>
@@ -95,13 +96,13 @@
                         <div class="next-button next-button-setup">➜</div>
                     </div>
                     <div class="multi-choice-options-container">
-                        <div class="multi-choice-option btn">
+                        <div class="multi-choice-option btn" id="5">
                             <h4 class="h3-dashboard">5 questions</h4>
                         </div>
-                        <div class="multi-choice-option btn">
+                        <div class="multi-choice-option btn" id="10">
                             <h4 class="h3-dashboard">10 questions</h4>
                         </div>
-                        <div class="multi-choice-option btn">
+                        <div class="multi-choice-option btn" id="20">
                             <h4 class="h3-dashboard">20 questions</h4>
                         </div>   
                     </div>
@@ -195,7 +196,7 @@
             </div>
         </div>
         <div class="game-container review-container setup-container" style="display: none;" id="review-container">
-            <div class="setup-step-active stats-container">
+            <div class="setup-step-active stats-container" id="stats-container">
                 
                 <div class="verticle-align-center-1-line">
                     <i class="fa-solid fa-chart-simple color-text"></i>
@@ -204,12 +205,12 @@
                 <div class="verticle-align-center-1-line quiz-lynx-container">
                     <div class="quiz-lynx-text">Quiz LynX</div>
                 </div>
-                <div class="verticle-align-center-1-line">
+                <!-- <div class="verticle-align-center-1-line">
                     <div class="img-container img-container-center">
                         <img src="https://i.scdn.co/image/ab67616d00004851a1d9c9969f2a7ed27e449a3c" alt="playlist-photo">
                     </div>
-                </div>
-                <div class="verticle-align-center-1-line">
+                </div> -->
+                <div class="verticle-align-center-1-line" id="stats-table-review-container">
                     <div class="stats-table">
                         <div class="row-search stat-row">
                             <h3 class="text-column ">Total score:</h3>

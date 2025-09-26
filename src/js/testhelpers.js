@@ -79,7 +79,7 @@ const tempQSearchData = [{id: "Q0-A0", text:"Pink Floyd - Meddle"}, {id: "Q0-A1"
 
 const albumCoverQuestionData = {id: 0, questionNumber: 0, completionStatus: false, type:"albumCoverQuestion", answer: "Q0-A1",
     templateName: "guess-album-cover-template",options: tempQSearchData, questionText: "Can you guess the album cover?",
-numGuessesAllow: 5};
+numGuessesAllow: 5, image: "https://i.scdn.co/image/ab67616d00001e02ab4da6c3f47506c90c5e56a3"};
 
 const tempOptions = [["2017","2011","2014", "1999"]];
 let questions = new Map();
@@ -98,12 +98,12 @@ function createQuestions() {
 
     //set up data for the last question.
     //this question will be guess based on lyrics.
-
+//why did i do this like this? 
 
     const tempQSearchDataQ4 = [{id: "Q4-A0", text:"Cant you here me knocking"}, {id: "Q4-A1",text:"Brown Sugar"},
     {id: "Q4-A2",text: "Wild horses"},
     {id:"Q4-A3", text: "Dead flowers"}, {id: "Q4-A4", text:"I got the blues"}, {id: "Q4-A5", text:"Bitch"}
-    ];
+    ];//this is not used at the moment. 
 
     const tempOptions4 = ["Can't you hear me knocking", "Brown Sugar", "Wild horses", "Dead flowers", "I got the blues", "bitch"];
     tempData = {"id": 2,"element": null,"questionNumber": 2,"completionStatus": false,"type": "multiChoice", "answer": 2, 
