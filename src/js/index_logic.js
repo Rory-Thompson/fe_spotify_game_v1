@@ -12,12 +12,15 @@ async function fetch_config() {
     return json_response
 }
 async function load_handler() {
+    sessionStorage.setItem("play_as_guest","false");//set the sessions storage item to be reset (unless user clicks play as guest. )
     let config_res = await fetch_config();
     config = config_res;
     let redirect_link = document.querySelector("#redirect-link");
     let current_href = redirect_link.href;
     let url = update_url_encoding(current_href,"redirect_uri",config.redirect_uri);
     redirect_link.href= url;
+    let play_as_guest = document.querySelector("#play-as_guest-btn");
+    play_as_guest.href= url;
     console.log("redirect url successfully update to config: ", url);
 }
 

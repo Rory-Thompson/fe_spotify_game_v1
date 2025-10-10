@@ -375,9 +375,18 @@ rowSearchContainer.addEventListener("scroll", () => {
 })
 
 
-
+let userProgressObject
 window.addEventListener('load', () => {
     //on content load we need to set a scroll shadow detection. 
+    if (sessionStorage.getItem("play_as_guest") == "true") {
+        userProgressObject = new userProgress(questionCount, tempQuestions,0,0,tempProgressElement);
+        setupContainer.style.display = "none";
+        gameContainer.style.removeProperty("display");
+        userProgressObject.beginGame();
+        console.log("game begun fools.");
+        return 
+    }
+    //logic to be done if play_as_guest is false. 
     updateMask(rowSearchContainer);
     const testPlaylist = getTestPlaylist();
     auth_code = getQueryVariable("code");

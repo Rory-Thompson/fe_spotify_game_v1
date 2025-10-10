@@ -63,12 +63,10 @@ function getTestPlaylist() {
 ]
 
 }
-
+//sessionStorage.setItem("play_as_guest", "true");
 function TestGame() {
-    setLoadingState(setupContainer,"loading-state");
-    userProgressObject.beginGame();
-    console.log("game begun fools.");
-
+    sessionStorage.setItem("play_as_guest", "true");
+    console.log("running test game/");
 }
 const questionText = ["what year did the album The Positions by Gang of Youths get released?"]
 

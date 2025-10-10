@@ -345,7 +345,18 @@ class userProgress {
             gameContainer.style.display = "none";
             questionSubmitBtn.innerHTML = "play again";
             reviewContainer.removeAttribute("style");
-            let [image,name] = await get_artist_image(this.gameStats.bestKnownArtist);
+            let image;
+            let name;
+            console.log("best known artist: ",this.gameStats.bestKnownArtist);
+            try {
+                let [image_obj,name] = await get_artist_image(this.gameStats.bestKnownArtist);
+                [image,name] = [image_obj.url,name];
+            } catch (error) {
+                console.error(error);
+                console.log("best known artist: ",this.gameStats.bestKnownArtist);
+                [image,name] = ["assets/images/goat_on_a_chair.jpg", this.gameStats.bestKnownArtist];
+            }
+            
             let after_element = document.querySelector("#stats-table-review-container");
             let append_to = document.querySelector("#stats-container");
             console.log("after after_element: ",after_element);
@@ -353,7 +364,7 @@ class userProgress {
             console.log("image: ", image);
             this.gameStats.bestKnownArtist = name;
             this.updateCSSPropertyStats();
-            appendImage(append_to,image.url,after_element,["img-container", "img-container-center"]);
+            appendImage(append_to,image,after_element,["img-container", "img-container-center"]);
     }
     collectStats() {
         //purpose: colates all the stats and sets the required variables inside of the css to these values. \
@@ -380,7 +391,7 @@ class userProgress {
         const artists = [...artistCount.keys()];
         const artistCounts = [...artistCount.values()];
         const maxIndex = artistCounts.indexOf(Math.max(...artistCounts));
-        this.gameStats.bestKnownArtist = artists[maxIndex] || "your trash";
+        this.gameStats.bestKnownArtist = artists[maxIndex] || "you knew nothing";
         
     }
 

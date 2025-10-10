@@ -54,7 +54,7 @@ questionSubmitBtn.addEventListener("click", () => {
     };
 });
 
-let userProgressObject = new userProgress(questionCount, tempQuestions,0,0,tempProgressElement);// (used the default test questions will be used of the function fails .s )
+//let userProgressObject = new userProgress(questionCount, tempQuestions,0,0,tempProgressElement);// (used the default test questions will be used of the function fails .s )
 // logic for the game progress component. 
 
 
