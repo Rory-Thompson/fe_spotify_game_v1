@@ -20,7 +20,7 @@ async function load_handler() {
     let url = update_url_encoding(current_href,"redirect_uri",config.redirect_uri);
     redirect_link.href= url;
     let play_as_guest = document.querySelector("#guest-btn");
-    play_as_guest.href= url;
+    play_as_guest.href= config.redirect_uri;
     console.log("redirect url successfully update to config: ", url);
 }
 
