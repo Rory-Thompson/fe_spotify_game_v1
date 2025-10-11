@@ -349,8 +349,9 @@ class userProgress {
             let name;
             console.log("best known artist: ",this.gameStats.bestKnownArtist);
             try {
-                let [image_obj,name] = await get_artist_image(this.gameStats.bestKnownArtist);
-                [image,name] = [image_obj.url,name];
+                const [image_obj,name_val] = await get_artist_image(this.gameStats.bestKnownArtist);
+                console.log("best known artist from spotify: ", image_obj.url,name_val);
+                [image,name] = [image_obj.url,name_val];
             } catch (error) {
                 console.error(error);
                 console.log("best known artist: ",this.gameStats.bestKnownArtist);

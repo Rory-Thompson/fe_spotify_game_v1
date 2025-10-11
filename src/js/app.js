@@ -379,7 +379,7 @@ let userProgressObject
 window.addEventListener('load', () => {
     //on content load we need to set a scroll shadow detection. 
     if (sessionStorage.getItem("play_as_guest") == "true") {
-        userProgressObject = new userProgress(questionCount, tempQuestions,0,0,tempProgressElement);
+        userProgressObject = new userProgress(tempQuestions.size, tempQuestions,0,0,tempProgressElement);
         setupContainer.style.display = "none";
         gameContainer.style.removeProperty("display");
         userProgressObject.beginGame();

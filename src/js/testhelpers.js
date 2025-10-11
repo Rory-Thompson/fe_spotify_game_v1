@@ -72,14 +72,16 @@ const questionText = ["what year did the album The Positions by Gang of Youths g
 
 const tempQSearchData = [{id: "Q0-A0", text:"Pink Floyd - Meddle"}, {id: "Q0-A1",text:"Jarrad Wright - The Big Lez Show Soundtrack"},
     {id: "Q0-A2",text: "Sticky Fingers - Land of Pleasure"},
-    {id:"Q0-A3", text: "Mt.Joy - Mt.Joy"}, {id: "Q0-A4", text:"Lorde - Pure Heroine"}, {id: "Q0-A5", text:"Fidlar - Almost Free"}
+    {id:"Q0-A3", text: "Mt.Joy - Mt.Joy"}, {id: "Q0-A4", text:"Lorde - Pure Heroine"}, {id: "Q0-A5", text:"Fidlar - Almost Free"},{id: "Q0-A6", text:"The Beatles - Abbey Road"},
+    {id:"Q0-A7", text: "LMFAO - Sorry For Party Rocking"},{id:"Q0-A8", text: "50 Cent - Get Rich Or Die Tryin'"},
+    {id:"Q0-A9", text: "Chumbawamba - Tubthumper"},{id:"Q0-A10", text: "The Monkees - More of The Monkees"}
 ];
 
-const albumCoverQuestionData = {id: 0, questionNumber: 0, completionStatus: false, type:"albumCoverQuestion", answer: "Q0-A1",
+const albumCoverQuestionData = {id: 0, questionNumber: 0, completionStatus: false, type:"albumCoverQuestion", answer: "Q0-A7",
     templateName: "guess-album-cover-template",options: tempQSearchData, questionText: "Can you guess the album cover?",
-numGuessesAllow: 5, image: "https://i.scdn.co/image/ab67616d00001e02ab4da6c3f47506c90c5e56a3"};
-
-const tempOptions = [["2017","2011","2014", "1999"]];
+numGuessesAllow: 5, image: "https://i.scdn.co/image/ab67616d00001e021db908d5f66645cb158837ca"};
+//"https://i.scdn.co/image/ab67616d00001e02ab4da6c3f47506c90c5e56a3" jarrad wright album cover.
+const tempOptions = [["Anakin's Theme","He Is the Chosen One","Duel of the Fates", "Qui-Gin's Noble End"]];
 let questions = new Map();
 function createQuestions() {
     //let questions = new Map()
@@ -87,31 +89,69 @@ function createQuestions() {
 
     
     tempData = {"id": 1,"element": null,"questionNumber": 1,"completionStatus": false,"type": "multiChoice", "answer": 2, 
-        "userAnswer": null,"questionText": questionText, "templateName": "multi-choice-template","options": tempOptions[0]};
+        "userAnswer": null,"questionText": "What song of the John Williams - Star Wars: The Phantom Menace is trending the most on spotify?", "templateName": "multi-choice-template","options": tempOptions[0]};
     questions.set(1,new albumReleaseMultiChoice(tempData));
-    questions.get(1).imageLocation = "https://i.scdn.co/image/ab67616d00004851b57074c36a92143915fecee3";
-    questions.get(0).artistTopic = "Jarrad Wright";
-    questions.get(1).artistTopic = "Gang of Youths";
+    //jarradd "https://i.scdn.co/image/ab67616d00004851b57074c36a92143915fecee3"
+    questions.get(1).imageLocation = "https://i.scdn.co/image/ab67616d000048518b344822c35025ba9439f004";
+    questions.get(0).artistTopic = "LMFAO";
+    questions.get(1).artistTopic = "John Williams";
 
 
     //set up data for the last question.
     //this question will be guess based on lyrics.
-//why did i do this like this? 
+    //why did i do this like this? 
 
-    const tempQSearchDataQ4 = [{id: "Q4-A0", text:"Cant you here me knocking"}, {id: "Q4-A1",text:"Brown Sugar"},
-    {id: "Q4-A2",text: "Wild horses"},
-    {id:"Q4-A3", text: "Dead flowers"}, {id: "Q4-A4", text:"I got the blues"}, {id: "Q4-A5", text:"Bitch"}
-    ];//this is not used at the moment. 
 
-    const tempOptions4 = ["Can't you hear me knocking", "Brown Sugar", "Wild horses", "Dead flowers", "I got the blues", "bitch"];
-    tempData = {"id": 2,"element": null,"questionNumber": 2,"completionStatus": false,"type": "multiChoice", "answer": 2, 
-        "userAnswer": null,"questionText": "what song of the Rolling Stones - Sticky Fingers album is trending the most on spotify?", "templateName": "albumSelectOption","options": tempOptions4};
+    const tempOptions4 = ["2012", "1999", "2004", "2007", "2009", "2003"];
+    tempData = {"id": 2,"element": null,"questionNumber": 2,"completionStatus": false,"type": "multiChoice", "answer": 5, 
+        "userAnswer": null,"questionText": "What year was the Album, Get Rich Or Die Tryin' by 50 Cent Released?", "templateName": "albumSelectOption","options": tempOptions4};
     questions.set(2, new albumReleaseMultiChoice(tempData));
     //this isnt really gonna work. maybe just do multiple choice for now, but still i think it would be nice to have the whole tracklist. 
     //essentially it just needs the image not the drawing over the top of it. 
-    questions.get(2).imageLocation = "https://i.scdn.co/image/ab67616d00001e02a1d9c9969f2a7ed27e449a3c"
+    questions.get(2).imageLocation = "https://i.scdn.co/image/ab67616d00004851d843fabb75fef14010e30cae"
+
+    questions.get(2).artistTopic = "50 Cent";
+
+    //question 4
+    //guess abbey road album cover. 
+    const albumCoverQuestion4Data = {id: 3, questionNumber: 3, completionStatus: false, type:"albumCoverQuestion", answer: "Q0-A6",
+    templateName: "guess-album-cover-template",options: tempQSearchData, questionText: "Can you guess the album cover?",
+    numGuessesAllow: 5, image: "https://i.scdn.co/image/ab67616d00001e02dc30583ba717007b00cceb25"};
+    questions.set(3, new guessAlbumCover(albumCoverQuestion4Data));
+    questions.get(3).artistTopic = "The Beatles";
+
+    //question 5
+    //nirvana question.
+    const tempOptions5 = ["$1", "$2","$10", "$20", "$50", "$100"];
+    tempData = {"id": 4,"element": null,"questionNumber": 4,"completionStatus": false,"type": "multiChoice", "answer": 0, 
+        "userAnswer": null,"questionText": "On the album cover, Nirvana - Nevermind, what is the denomination of currency on the album cover bill?", "templateName": "albumSelectOption","options": tempOptions5};
+    questions.set(4, new albumReleaseMultiChoice(tempData));
+    //this isnt really gonna work. maybe just do multiple choice for now, but still i think it would be nice to have the whole tracklist. 
+    //essentially it just needs the image not the drawing over the top of it. 
+    questions.get(4).imageLocation = "https://i.scdn.co/image/ab67616d00004851fbc71c99f9c1296c56dd51b6"
     console.log("test questions created.");
-    questions.get(2).artistTopic = "Rolling Stones";
+    questions.get(4).artistTopic = "Nirvana";
+
+    //question 6
+    //guess Tubthumper album cover. 
+    const albumCoverQuestion6Data = {id: 5, questionNumber: 5, completionStatus: false, type:"albumCoverQuestion", answer: "Q0-A9",
+    templateName: "guess-album-cover-template",options: tempQSearchData, questionText: "Can you guess the album cover?",
+    numGuessesAllow: 5, image: "https://i.scdn.co/image/ab67616d00001e026cfc470251e23a7bb6a38d66"};
+    questions.set(5, new guessAlbumCover(albumCoverQuestion6Data));
+    questions.get(5).artistTopic = "Chumbawamba";
+
+    //question 7
+    //Hello goodbye question
+    const tempOptions7 = ["Goodbye", "Yes","No", "Hello", "I don't know", "Slow"];
+    tempData = {"id": 6,"element": null,"questionNumber": 6,"completionStatus": false,"type": "multiChoice", "answer": 3, 
+        "userAnswer": null,"questionText": "If you say 'Goodbye', I say '...' (fill the blank) ", "templateName": "albumSelectOption","options": tempOptions7};
+    questions.set(6, new albumReleaseMultiChoice(tempData));
+    //this isnt really gonna work. maybe just do multiple choice for now, but still i think it would be nice to have the whole tracklist. 
+    //essentially it just needs the image not the drawing over the top of it. 
+    questions.get(6).imageLocation = "https://i.scdn.co/image/ab67616d00004851692d9189b2bd75525893f0c1"
+    console.log("test questions created.");
+    questions.get(6).artistTopic = "The Beatles";
+
     return questions
     
 }

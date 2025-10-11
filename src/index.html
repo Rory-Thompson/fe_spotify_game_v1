@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Quiz website</title>
     <script src="js/index_logic.js"></script>
-    <script src="js/index.js"></script>
+    <script src="js/index.js" defer></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="css/styles.css" />
 </head>
@@ -14,7 +14,7 @@
         <div class="container">
             <h1 style="text-align:center">Choose connection type</h1>
             <div class="button_col">
-                <a href="#" class="guest btn" id="play-as_guest-btn"> Play as guest</a>
+                <a href="#" class="guest btn" id="guest-btn"> Play as guest</a>
                 <div class="or-divider">
                     <span class="vl-innertext">or</span>
                 </div>
@@ -26,6 +26,10 @@
                 <div class="help-footer">
                     <span class="help-text">Dont know what your doin?</span>
                     <a target="_blank" href="https://www.youtube.com/watch?v=oHg5SJYRHA0&ab_channel=cotter548" class="help_btn">Get help</a>
+                </div>
+                <div class="help-footer" style="margin-top:5px;border-top: 1px solid #ccc">
+                    <span class="help-text">Project Documentation</span>
+                    <a target="_blank" href="https://github.com/Rory-Thompson/fe_spotify_game_v1/blob/main/README.md" class="help_btn">Here</a>
                 </div>
             </div>
         </div>

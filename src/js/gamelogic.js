@@ -1,4 +1,3 @@
-const questionCount = 3;
 const root = document.documentElement;
 
 const questionSubmitBtn = document.querySelector("#question-submit-btn");
