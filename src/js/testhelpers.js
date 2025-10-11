@@ -144,7 +144,7 @@ function createQuestions() {
     //Hello goodbye question
     const tempOptions7 = ["Goodbye", "Yes","No", "Hello", "I don't know", "Slow"];
     tempData = {"id": 6,"element": null,"questionNumber": 6,"completionStatus": false,"type": "multiChoice", "answer": 3, 
-        "userAnswer": null,"questionText": "If you say 'Goodbye', I say '...' (fill the blank) ", "templateName": "albumSelectOption","options": tempOptions7};
+        "userAnswer": null,"questionText": "If you say 'Goodbye', I say '...' ", "templateName": "albumSelectOption","options": tempOptions7};
     questions.set(6, new albumReleaseMultiChoice(tempData));
     //this isnt really gonna work. maybe just do multiple choice for now, but still i think it would be nice to have the whole tracklist. 
     //essentially it just needs the image not the drawing over the top of it. 
