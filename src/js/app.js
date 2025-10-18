@@ -41,7 +41,7 @@ function getQueryVariable(variable) {
 
 
  async function get_access_token(user_id, auth) {
-    console.log("access token passed: ", auth);
+
     //purpose: send requirest to base auth api to create and fetch access tokens. 
     //if no base is put it it will just do the request relative to the current path the website is hosted from. so i can do /api/auth no worries. no need for config. 
     const response = await fetch("/api/auth", {
@@ -55,7 +55,6 @@ function getQueryVariable(variable) {
         throw new Error(`the authorization failed from server. Error: ${response.status}`);
     }
     myTokens = await response.json(); 
-    console.log("my spotify access tokens: ", myTokens);
     return myTokens
  }
 
@@ -242,7 +241,15 @@ function setCompletionStatus(currSetupStep, value,completeKeyWord) {
         console.log("element tab: ", currSetupStep.elementTab.ClassList)
         currSetupStep.elementTab.classList.remove(completeKeyWord);
     }
-    checkFullSetupCompletion(setupCompletion);
+    let completionStatus = checkFullSetupCompletion(setupCompletion);
+    if (completionStatus) {
+        //the logic is set in the StartPlayingBtn click event listener logic. so the logic doesnt change but the startPlaying inner html
+        //needs to be updated to reflect what will happen as technically the logic that will run has changed.
+        console.log("the user has finished all completion steps. ");
+        StartPlayingBtn.innerHTML = "Begin Game";
+    } else {
+        StartPlayingBtn.innerHTML = "Next Step";
+    }
 }
 
 for (let i=0; i<rowSearchPlaylist.length; i++) {
@@ -259,14 +266,17 @@ for (let i=0; i<rowSearchPlaylist.length; i++) {
 
 
 function checkFullSetupCompletion(setupCompletion) {
+    //purpose: to define the logic for when the setupCompletion is complete. 
     const FullCompletionStatus = [...setupCompletion.values()].every((step) => step.completionStatus);
     console.log("checking full completion status to update button, status: ",FullCompletionStatus)
-    if (FullCompletionStatus) {
-        //setup is complete. 
-        StartPlayingBtn.classList.remove("not-clickable");
-    } else {
-        StartPlayingBtn.classList.add("not-clickable");//add just in case. 
-    }
+    // if (FullCompletionStatus) {
+    //     //setup is complete. 
+    //     StartPlayingBtn.classList.remove("not-clickable");
+    // } else {
+    //     StartPlayingBtn.classList.add("not-clickable");//add just in case. 
+    // }
+    
+    return FullCompletionStatus
 
 }
 
@@ -404,46 +414,115 @@ window.addEventListener('load', () => {
 });
 
 
-StartPlayingBtn.addEventListener("click", async () => {
-
+async function startPlayingClick() {
     // function when the start playing button is clicked
-
+    //WHAT IT DOES: if the start playing button is clicked we need to make the getgame request, create the game object and navigate the user to the game container.
     //assume the startt playing button is in the setup container.
-    // first we should probably validate the steps are correct. this could be done on the back end though.  
+
+    // first we should probably validate the steps are correct. this could be done on the back end though. 
+    
     const setLoadingStateElement = StartPlayingBtn.closest(".setup-container");
     console.log("setup container to be passed: ", setLoadingStateElement)
     const loadingDivId = "loading-state";
     setLoadingState(setLoadingStateElement,loadingDivId);
     let game_details = getSetupSelectedOptions();
-    let my_game = await getGame(game_details, myTokens.access_token);
-    let game_map =getGameResponseIntoObject(my_game);
-    console.log("game_details: ", game_details);
-    console.log("response get game: ", my_game);
-    userProgressObject = new userProgress(my_game.question_count, game_map,0,0,tempProgressElement);
-
-    setTimeout(() => {
+    let my_game
+    try {
+        my_game = await getGame(game_details, myTokens.access_token);
+        console.log("response get game: ", my_game);
+        let game_map =getGameResponseIntoObject(my_game);
+        console.log("game_details: ", game_details);
+        userProgressObject = new userProgress(my_game.question_count, game_map,0,0,tempProgressElement);
         console.log("waited 1 seconds!");
-        removeLoadingState(setLoadingStateElement,"#loading-state");
-        if (true) {
-            //successful game creation.
-            //display game
-            setupContainer.style.display = "none";
-            gameContainer.style.removeProperty("display");
-            console.log("game begun fools.");
-
+        setupContainer.style.display = "none";
+        gameContainer.style.removeProperty("display");
+        console.log("game begun fools.");
         userProgressObject.beginGame();
-        } else {
-            removeChildrenInLineDisplays(setLoadingStateElement);
+        //removeChildrenInLineDisplays(setLoadingStateElement);
+
+        
+    } catch (error) {
+        let retryButtonId = "create-game-retry"; 
+        console.log("There was an error loading the game");
+        //removeChildrenInLineDisplays(setLoadingStateElement);
+        let retryDiv = addRetryState(setLoadingStateElement,retryButtonId);
+        let retryButton = retryDiv.querySelector("#"+retryButtonId);
+        if (retryButton == null) {
+            throw new Error("no valid retry button was created inside the retry div.");
         }
-    }, 1000);
+        retryButton.addEventListener("click", () => {
+            console.log("the retry button has been clicked");
+            setupContainer.style.removeProperty("display"); //(incase the error happens after the setup container has been set to none in the try block)
+            gameContainer.style.display = "none";
+            console.log("retry Button div: ", retryDiv);
+            console.log("setLoadingStateElement", setLoadingStateElement);
+            removeChildrenInLineDisplays(setLoadingStateElement);
+            removeRetryState(setLoadingStateElement,retryDiv);
 
+        })
+        console.error(error);
+        
 
+    } finally {
+        removeLoadingState(setLoadingStateElement,"#loading-state");
+    }
+}
+
+StartPlayingBtn.addEventListener("click", async () => {
+
+    // function when the start playing button is clicked
+
+    //assume the startt playing button is in the setup container.
+    // first we should probably validate the steps are correct. this could be done on the back end though. 
+    let completionStatus = checkFullSetupCompletion(setupCompletion); 
+    if (completionStatus) {
+        startPlayingClick()
+    } else {
+        //go to the next tab
+        newCounter = nextStep(setupSteps, activeTabIndex);
+        activeTabIndex = newCounter;
+    }
+    
 })
 
+function removeRetryState(element,elementToRemove) {
+    //element: the element we are removing the retry state from.
+    //elementToRemove: the actual RetryState div. (what is returned from the addRetryStateCall in the first place)
+    //result: the retry state has been removed from the element. 
+    element.removeChild(elementToRemove);
+}
+
+function addRetryState(element, retryButtonId) {
+    //purpose: to add a generic loading failed div to any element. note sizing may need to vary. 
+    //element: The element we are appending the retry state to. 
+    // retryButtonId: the custom id we are going to set to the actual icon so it can be accessed to create custom button logic.
+    //output: return the full loading failed div so it can be edited easily for custom button logic
+    if (element== null) {
+        throw new Error("missing element: there is no element to set loading state to. please make sure the element is not null.");
+    }
+    let loadingFailedDiv = document.createElement("div");
+    loadingFailedDiv.classList.add("loading-failed-div");
+    let retryIcon = document.createElement("i");
+    retryIcon.classList.add("fa-solid");
+    retryIcon.classList.add("fa-rotate-right");
+    retryIcon.classList.add("loading-failed-btn");
+    retryIcon.classList.add("icon-btn");
+    retryIcon.id = retryButtonId;
+    loadingFailedDiv.appendChild(retryIcon);
+    let textSpan = document.createElement("span");
+    textSpan.style.margin = "5px";
+    textSpan.innerHTML = "Unkown error. Please retry";
+    loadingFailedDiv.appendChild(textSpan);
+    element.appendChild(loadingFailedDiv);
+    console.log("added loading retry to element: ", element);
+    return loadingFailedDiv
+    
+}
 
 function removeChildrenInLineDisplays(element) {
+    //this removes the hard coded value for the display stle value. and it will revert back to what is in the css. 
     if (element == null) {
-        throw new Error("missing element: there is no element to set loading state to. please make sure the element is not null.")
+        throw new Error("missing element: there is no element to set loading state to. please make sure the element is not null.");
     }
     const childContent = element.children;
     console.log("child content to remove inline display displays. ", childContent);
@@ -494,7 +573,7 @@ function removeLoadingState(element, loadingDivId) {
     loadingDiv.style.removeProperty("display");//will default to .css file where it is set as display: none;
     
 }
-
+let a;
 
 async function getGame(json_game_details, access_token) {
     //purpose: to be called when the user has start a game. 
@@ -517,6 +596,9 @@ async function getGame(json_game_details, access_token) {
             }
         });
         if (!response.ok) {
+            console.log("response is not ok");
+            console.log("what is the response", response);
+            a = response;
             throw new Error(`Response status: ${response.status}`);
         }
         const result = await response.json();

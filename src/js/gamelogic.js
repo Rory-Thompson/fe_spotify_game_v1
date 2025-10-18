@@ -9,12 +9,13 @@ const rowSearchContainerDropdown = document.querySelector(".rows-search-containe
 const tempProgressElement = document.querySelector(".game-progress-bar");
 const reviewContainer = document.querySelector("#review-container");
 const tempQuestions = createQuestions();
+const playAgainButton = document.querySelector("#play-again-container");
 
 questionSubmitBtn.addEventListener("click", () => {
     const qDisp  = userProgressObject.questionDisplayed;
     const currQuest = userProgressObject.questionObjectsMap.get(qDisp);
-    
     if (!currQuest.completionStatus) {
+        questionSubmitBtn.classList.add("not-clickable");
         console.log("checking user answer.")
         const newElement = document.createElement("div");
         newElement.className = "explosion";
@@ -28,6 +29,7 @@ questionSubmitBtn.addEventListener("click", () => {
         }
         currQuest.checkAnswer();
         //questionSubmitBtn.innerHTML = "Next Q";
+        questionSubmitBtn.classList.remove("not-clickable");
         })
     } else {
         console.log("user is going to the next question. ");
@@ -49,7 +51,6 @@ questionSubmitBtn.addEventListener("click", () => {
             userProgressObject.renderQuestion();
         questionSubmitBtn.innerHTML = "Check";
         }
-        
     };
 });
 
@@ -248,6 +249,11 @@ class searchListRows {
         this.displayedOptions = new Map();
         this.ROWHEIGHT = 30;
         this.optionsContainer = optionsContainer;//this is required. the container in which the rows are rendered.
+        console.log("this.options: ", [...this.options.keys()]);
+        console.log("data: ", data);
+        let keys = [...this.options.keys()];
+        console.log("keys: ", keys.length);
+        this.optionsContainer.style.height = (this.ROWHEIGHT*(keys.length)).toString()+"px";
         this.displayMaxRows = displayMaxRows; //the number of rows to be displayed at a maximum. 
         this.bufferRows = bufferRows;
         this.optionsFilteredID = [...data.values()].map((value) => value.id);//an array of the option ids that are search active.
@@ -270,7 +276,7 @@ class searchListRows {
             updateMask(this.optionsContainer);
         });
 
-        this.optionsContainer.addEventListener("scroll", () => {
+        this.optionsWrapper.addEventListener("scroll", () => {
             //add listener as the user scrolls to update the mask. 
             updateMask(this.optionsContainer);
             this.onScroll();
@@ -281,7 +287,8 @@ class searchListRows {
             const nextFocused = event.relatedTarget;//tells you were the focus is going.
             console.log("next focused.id: ", nextFocused);
             if (nextFocused==null) {
-                this.optionsContainer.classList.remove("show");
+                //this.optionsContainer.classList.remove("show");
+                this.optionsWrapper.classList.remove("show");
                 console.log("next item is not focusable. must assume focus has been lost on the element. ");
                 return
             }
@@ -315,21 +322,24 @@ class searchListRows {
             //you could do this via a loop. it probs would actually be much nicer. idk why i did it this way, it is cool but not intuitive. 
             //essentially it is taking apart the maps, checking which ones have the text as a substring, then matching it up with the keys.
             console.log("valid values after  search key: ", validValues);
-            this.optionsFilteredID =  validValues;
+            this.optionsFilteredID =  validValues;//array
             this.wantedIndex = this.optionsFilteredID.slice(0,this.displayMaxRows+this.bufferRows);//get the correct rows.
+            console.log("updating inner wrapper to have height: ", this.ROWHEIGHT*(this.optionsFilteredID.length));
+            this.optionsContainer.style.height = (this.ROWHEIGHT*(this.optionsFilteredID.length)).toString()+"px";
             this.render();
         });
     }
 
     onScroll() {
         // as the user scrolls we need to re render everything basically. 
-        const scrollTop = this.optionsContainer.scrollTop;
+        const scrollTop = this.optionsWrapper.scrollTop;
+        
         const startIndex = Math.floor(scrollTop/this.ROWHEIGHT);
-        // console.log("start index: ", startIndex, "scroll Top RES: ",  scrollTop, "ROWHEIGHT: ", this.ROWHEIGHT);
-        // if (!(startIndex == 0)) {
-        //     console.log("the start index has changed, render mroe stuff.", startIndex);
-        //     console.log("this.optionsFiltered: ", this.optionsFilteredID);
-        // }        
+        console.log("start index: ", startIndex, "scroll Top RES: ",  scrollTop, "ROWHEIGHT: ", this.ROWHEIGHT);
+        if (!(startIndex == 0)) {
+            console.log("the start index has changed, render mroe stuff.", startIndex);
+            console.log("this.optionsFiltered: ", this.optionsFilteredID);
+        }        
         this.wantedIndex = this.optionsFilteredID.slice(startIndex, this.displayMaxRows+this.bufferRows+startIndex);
         this.render();
         //console.log("this.wantedIndex: ", this.wantedIndex);
@@ -432,3 +442,59 @@ function defineDrawPath(quadX, quadY) {
 }
 
 
+playAgainButton.addEventListener("click", () => {
+    playAgain();
+})
+
+function playAgain() {
+    console.log("user is going back to the set up screen."); 
+
+    reviewContainer.style.display = "none";
+    setupContainer.style.removeProperty("display");
+    removeChildrenInLineDisplays(setupContainer);
+
+    //STUFF TO DO
+
+    //set --score property to be 0.
+
+    gameScore.querySelector(".score-text").style.setProperty("--score", 0);
+
+    //GET RID OF THE IMAGE ELEMENT ADDED
+
+    let reviewPageImageWrapper = reviewContainer.querySelector("#review-page-image-wrapper");
+    console.log(reviewPageImageWrapper);
+    if (reviewPageImageWrapper == null) {
+        console.log("The review page image wrapper is undefined");
+    } else {
+         if (reviewPageImageWrapper.parentNode) {
+        reviewPageImageWrapper.parentNode.removeChild(reviewPageImageWrapper); 
+        console.log("the reivew page image wrapper has been removed. ");
+    }
+    }
+    //WHAT HAPPENS IF IT IS PLAY AS GUEST = TRUE
+    if (sessionStorage.getItem("play_as_guest") =="true") {
+        userProgressObject = new userProgress(tempQuestions.size, tempQuestions,0,0,tempProgressElement);
+        setupContainer.style.display = "none";
+        gameContainer.style.removeProperty("display");
+        reviewContainer.style.display = "none";
+        userProgressObject.beginGame();
+        console.log("game begun fools.");
+
+        //update the inner html.
+        questionSubmitBtn.innerHTML = "check";
+    } else {
+        // THE TEXT FOR THE NEXT QUESTION/CHECK VALUE NEEDS TO BE PUT AS CHECK
+    StartPlayingBtn.innerHTML= "Begin Game";
+    //(the setup completion will always be true if they are begining again. )
+    }
+    questionSubmitBtn.innerHTML= "check";
+    // WHAT IS GOING ON WITH THE NUMBERS DOING WIERD STUFF IF THE PROMISE IS NOT YET FULLFILLED (MAYBE CANCEL THE PROMISE? )
+
+    let numbersRemoval = document.querySelectorAll(".flying-numbers");
+    console.log("these are the flying numbers that need removal.");
+    numbersRemoval.forEach((number) => {
+        number.parentNode.removeChild(number);
+        console.log("removing number: ", number);
+    })
+
+}

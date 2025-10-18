@@ -280,6 +280,7 @@ class albumReleaseMultiChoice extends multipleChoiceQuestion {
         const afterElement = this.element.querySelector(".multi-choice-options-container-quiz");
         const heading = this.element.querySelector(".multi-choice-heading");
         this.appendImage(elementAppend, this.imageLocation, afterElement, ["img-container-table", "img-container"]);
+
     }
 }
 
@@ -365,8 +366,9 @@ class userProgress {
             console.log("image: ", image);
             this.gameStats.bestKnownArtist = name;
             this.updateCSSPropertyStats();
-            appendImage(append_to,image,after_element,["img-container", "img-container-center"]);
-    }
+            let imageWrapper = appendImage(append_to,image,after_element,["img-container", "img-container-center"]);
+            imageWrapper.id = "review-page-image-wrapper";
+        }
     collectStats() {
         //purpose: colates all the stats and sets the required variables inside of the css to these values. \
         const keys = [...this.questionObjectsMap.keys()];
@@ -572,6 +574,7 @@ class imageRenderer {
         const ctx = this.canvasElement.getContext("2d");
         ctx.strokeStyle = "white";
         ctx.fillStyle = "black";
+        
         ctx.beginPath();
         const startDrawingAt = this.matrixVertice[coordsIndex[0][1]][coordsIndex[0][0]]; 
         //console.log("starting drawing at: ", startDrawingAt);
@@ -686,6 +689,7 @@ class imageRenderer {
                     const coordsIndex = this.defineDrawPath(colIndex, rowIndex);
                     console.log("this is not visible so will be plotted. coords index: ", coordsIndex);
                     this.tracePath(coordsIndex);
+                    this.canvasElement.getContext("2d").stroke();
                     this.canvasElement.getContext("2d").fill();
                 }
             }
@@ -711,6 +715,7 @@ function appendImage(element, imgSrc, elementAfter, classList) {
     //classList: an array of strings for the classes you would like appended to the container for the element
     //note it will always create a container for the image.
     //this is generic but is used by the multichoiceAlbum release question. 
+    //it also returns the wrapper for those that need it for later.
     const wrapper = document.createElement("div");
     wrapper.classList.add("verticle-align-center-1-line");
     const newElement = document.createElement("div");
@@ -727,6 +732,7 @@ function appendImage(element, imgSrc, elementAfter, classList) {
     wrapper.appendChild(newElement);
     console.log("wrapper: ", wrapper);
     element.insertBefore(wrapper, elementAfter);
+    return wrapper
 }
 
 
